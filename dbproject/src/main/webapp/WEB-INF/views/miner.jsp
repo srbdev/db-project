@@ -1,6 +1,11 @@
 <html>
 
 <head>
+	<script type="text/javascript" src="../resources/js/jquery-1.9.0.js"></script>
+	<script type="text/javascript" src="../resources/js/miningHelper.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="../resources/css/dbproject.css">
+
 	<title>Miner</title>
 </head>
 
