@@ -1,12 +1,14 @@
 <html>
+
 <head>
 	<title>Home</title>
 </head>
-<body>
-<h1>
-	Hello world! -- edited
-</h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+<body>
+	<h1>db-project home</h1>
+	
+	<p>This is the home page for db-project.</p>
+	
+	<a href="miner/home">Link</a> to the miner's page.
 </body>
 </html>
