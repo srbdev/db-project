@@ -45,15 +45,39 @@ MiningHelper.prototype.fetchUpcomingDVDs = function()
 	this.fetchMovieListWithPages('/dvds/upcoming', 50, 1);
 };
 
+
 MiningHelper.prototype.fetchSimilarMovies = function()
 {
+	var helper = this;
+	
 	$.ajax({
 		type: 'GET',
 		url: '../miner/fetchAllMovieIDs',
 		dataType: 'json',
 		success: function(data) {
-			console.log(data);
+			var time = 125;
+			
+			$.each(data, function(index, value) {
+				// I need to slow down, only 10 calls/sec allowed
+				setTimeout(function() {
+					helper.fetch5SimilarMoviesFromRottenTomatoes(value.id);
+				}, time);
+				
+				time += 125;
+			});
 		}
+	});
+};
+
+MiningHelper.prototype.fetch5SimilarMoviesFromRottenTomatoes = function(id)
+{
+	var query = this.baseURL + '/movies/' + id + '/similar.json?apikey=' + this.apiKey + '&limit=5';
+	
+	$.ajax({
+		type: 'GET',
+		url: query,
+		dataType: 'jsonp',
+		success: this.insertMoviesIdsToDb
 	});
 };
 
