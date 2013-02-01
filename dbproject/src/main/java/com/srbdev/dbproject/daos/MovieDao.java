@@ -1,57 +1,44 @@
 package com.srbdev.dbproject.daos;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import com.srbdev.dbproject.model.Movie;
 
 public class MovieDao 
 {
-	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
 	
 	public void setDataSource(DataSource dataSource)
 	{
-		this.dataSource = dataSource;
+		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Movie> fetchAllMovieIDs()
 	{
 		String sql = "SELECT id FROM movieIDsToFetch";
-		Connection connection = null;
 		
-		try {
-			connection = dataSource.getConnection();
-			PreparedStatement ps = connection.prepareStatement(sql);
-			List<Movie> movieIDs = new LinkedList<Movie>();
-			ResultSet rs = ps.executeQuery();
+		Collection movies = jdbcTemplate.query(sql, new RowMapper() {
 			
-			while (rs.next())
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException 
 			{
-				Movie m = new Movie();
-				m.setId(rs.getInt("id"));
-				movieIDs.add(m);
+				Movie movie = new Movie();
+				movie.setId(rs.getInt("id"));
+				
+				return movie;
 			}
 			
-			rs.close();
-			ps.close();
-			
-			return movieIDs;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (connection != null)
-			{
-				try {
-					connection.close();
-				} catch (SQLException e) {}
-			}
-		}
+		});
+		
+		return (List<Movie>) movies;
 	}
 }
