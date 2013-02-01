@@ -69,12 +69,19 @@ MiningHelper.prototype.runInsertMoviesIdsToDbAjax = function(query)
 
 MiningHelper.prototype.insertMoviesIdsToDb = function(data)
 {
+	var dataObj = JSON.parse(JSON.stringify(data));
+	var stringIds = '';
+	
+	$.each(dataObj.movies, function(index, value) {
+		stringIds += value.id + ',';
+	});
+	
 	$.ajax({
 		type: 'GET',
 		url: '../miner/insertMovieIdsToDb',
-		data: data,
+		data: {data: stringIds},
 		success: function(data) {
-			console.log('Insert movies IDs ajax call has returned');
+			
 		}
 	});
 };

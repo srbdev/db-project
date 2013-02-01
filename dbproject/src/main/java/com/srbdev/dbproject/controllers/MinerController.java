@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.srbdev.dbproject.daos.MovieDao;
@@ -40,5 +41,23 @@ public class MinerController
 		List<Movie> movieIDs = mDao.fetchAllMovieIDs();
 		
 		return movieIDs;
+	}
+	
+	@RequestMapping(value = "/insertMovieIdsToDb", method = RequestMethod.GET)
+	public @ResponseBody boolean insertMovieIdsToDb(@RequestParam(required = true) String data)
+	{
+		logger.info("Ajax call to insertMovieIdsToDb.");
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		MovieDao mDao = (MovieDao) context.getBean("movieDao");
+		String[] ids = data.split(",");
+		
+		for (String id : ids)
+		{
+			if (id.length() > 0)
+				mDao.insertMovieIDToDb(Integer.parseInt(id));
+		}
+		
+		return true;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -40,5 +41,18 @@ public class MovieDao
 		});
 		
 		return (List<Movie>) movies;
+	}
+	
+	public void insertMovieIDToDb(int id)
+	{
+		String sql = "INSERT INTO movieIDsToFetch (id) VALUES (?)";
+		
+		try {
+			jdbcTemplate.update(sql, new Object[] {id});
+			
+			System.out.println("INFO : Successfully added movie ID " +  id);
+		} catch (DuplicateKeyException e) {
+			System.err.println("ERROR : Duplicate entry movie ID " + id);
+		}
 	}
 }
