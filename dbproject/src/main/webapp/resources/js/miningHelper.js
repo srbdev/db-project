@@ -49,16 +49,10 @@ MiningHelper.prototype.fetchSimilarMovies = function()
 {
 	$.ajax({
 		type: 'GET',
-		url: 'http://localhost:8888/fetchAllMovieIDs',
-		data: {},
-		beforeSend: function() {
-			// This is called while waiting for success
-		},
+		url: '../miner/fetchAllMovieIDs',
+		dataType: 'json',
 		success: function(data) {
 			console.log(data);
-		},
-		error: function() {
-			// Failed request
 		}
 	});
 };
@@ -77,7 +71,7 @@ MiningHelper.prototype.insertMoviesIdsToDb = function(data)
 {
 	$.ajax({
 		type: 'GET',
-		url: 'http://localhost:8888/insertMovieIdsToDb',
+		url: '../miner/insertMovieIdsToDb',
 		data: data,
 		success: function(data) {
 			console.log('Insert movies IDs ajax call has returned');
