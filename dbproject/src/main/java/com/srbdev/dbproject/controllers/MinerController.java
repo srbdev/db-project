@@ -60,4 +60,17 @@ public class MinerController
 		
 		return true;
 	}
+	
+	@RequestMapping(value = "/updateCheckedSimilarMoviesStatus", method = RequestMethod.POST)
+	public @ResponseBody boolean updateCheckedSimilarMoviesStatus(@RequestParam(required = true) int id, @RequestParam(required = true) int status)
+	{
+		logger.info("Ajax call to updateCheckedSimilarMoviesStatus.");
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		MovieDao mDao = (MovieDao) context.getBean("movieDao");
+		
+		mDao.updateCheckedSimilarMoviesStatus(id, status);
+		
+		return true;
+	}
 }

@@ -26,7 +26,7 @@ public class MovieDao
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Movie> fetchAllMovieIDs()
 	{
-		String sql = "SELECT id FROM movieIDsToFetch";
+		String sql = "SELECT id FROM movieIDsToFetch WHERE checkedSimilarMovies = 0";
 		
 		Collection movies = jdbcTemplate.query(sql, new RowMapper() {
 			
@@ -45,14 +45,21 @@ public class MovieDao
 	
 	public void insertMovieIDToDb(int id)
 	{
-		String sql = "INSERT INTO movieIDsToFetch (id) VALUES (?)";
+		String sql = "INSERT INTO movieIDsToFetch (id,checkedSimilarMovies,fetchedInfo) VALUES (?,?,?)";
 		
 		try {
-			jdbcTemplate.update(sql, new Object[] {id});
+			jdbcTemplate.update(sql, new Object[] {id, 0, 0});
 			
 			System.out.println("INFO : Successfully added movie ID " +  id);
 		} catch (DuplicateKeyException e) {
 			System.err.println("ERROR : Duplicate entry movie ID " + id);
 		}
+	}
+	
+	public void updateCheckedSimilarMoviesStatus(int id, int status)
+	{
+		String sql = "UPDATE movieIDsToFetch SET checkedSimilarMovies = ? WHERE id = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {status, id});
 	}
 }

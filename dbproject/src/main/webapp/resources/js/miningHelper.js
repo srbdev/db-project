@@ -61,6 +61,7 @@ MiningHelper.prototype.fetchSimilarMovies = function()
 				// I need to slow down, only 10 calls/sec allowed
 				setTimeout(function() {
 					helper.fetch5SimilarMoviesFromRottenTomatoes(value.id);
+					helper.updateCheckedSimilarMoviesStatus(value.id, 1);
 				}, time);
 				
 				time += 125;
@@ -104,6 +105,18 @@ MiningHelper.prototype.insertMoviesIdsToDb = function(data)
 		type: 'GET',
 		url: '../miner/insertMovieIdsToDb',
 		data: {data: stringIds},
+		success: function(data) {
+			
+		}
+	});
+};
+
+MiningHelper.prototype.updateCheckedSimilarMoviesStatus = function(id, status)
+{
+	$.ajax({
+		type: 'POST',
+		url: '../miner/updateCheckedSimilarMoviesStatus',
+		data: {id: id, status: status},
 		success: function(data) {
 			
 		}
