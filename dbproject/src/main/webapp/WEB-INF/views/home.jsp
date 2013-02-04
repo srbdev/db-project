@@ -1,14 +1,27 @@
 <html>
 
 <head>
+	<script type="text/javascript" src="resources/js/jquery-1.9.0.js"></script>
+
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="resources/css/dbproject.css">
+
 	<title>Home</title>
 </head>
 
 <body>
-	<h1>db-project home</h1>
-	
-	<p>This is the home page for db-project.</p>
-	
-	<a href="miner/home">Link</a> to the miner's page.
+	<header>
+		Ripe Tomatoes
+		
+		<p><a href="/dbproject">Home</a> <a href="/dbproject/miner/home">Miner</a></p>
+	</header>
+
+	<div class="rtMainContent">
+		db-project home
+		
+		<p>This is the home page for db-project.</p>
+		
+		<a href="miner/home">Link</a> to the miner's page.
+	</div>
 </body>
 </html>

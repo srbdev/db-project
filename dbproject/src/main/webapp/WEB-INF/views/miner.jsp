@@ -4,6 +4,7 @@
 	<script type="text/javascript" src="../resources/js/jquery-1.9.0.js"></script>
 	<script type="text/javascript" src="../resources/js/miningHelper.js"></script>
 
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="../resources/css/dbproject.css">
 
 	<title>Miner</title>
@@ -18,7 +19,13 @@
 		});
 	</script>
 
-	<div class="appMainDiv">
+	<header>
+		Ripe Tomatoes
+		
+		<p><a href="/dbproject">Home</a> <a href="/dbproject/miner/home">Miner</a></p>
+	</header>
+
+	<div class="rtMainContent">
 		<span class="minerButton" onclick="miner.fetchBoxOffice()">Fetch box office</span>
 		<span class="minerButton" onclick="miner.fetchInTheaters()">Fetch in theaters</span>
 		<span class="minerButton" onclick="miner.fetchOpeningMovies()">Fetch opening movies</span>
