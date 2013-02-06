@@ -26,15 +26,42 @@
 	</header>
 
 	<div class="rtMainContent">
-		<span class="minerButton" onclick="miner.fetchBoxOffice()">Fetch box office</span>
-		<span class="minerButton" onclick="miner.fetchInTheaters()">Fetch in theaters</span>
-		<span class="minerButton" onclick="miner.fetchOpeningMovies()">Fetch opening movies</span>
-		<span class="minerButton" onclick="miner.fetchUpcomingMovies()">Fetch upcoming movies</span>
-		<span class="minerButton" onclick="miner.fetchTopRentals()">Fetch top rentals</span>
-		<span class="minerButton" onclick="miner.fetchCurrentRelease()">Fetch current release DVDs</span>
-		<span class="minerButton" onclick="miner.fetchNewReleaseDVDs()">Fetch new release DVDs</span>
-		<span class="minerButton" onclick="miner.fetchUpcomingDVDs()">Fetch upcoming DVDs</span>
-		<span class="minerButton" onclick="miner.fetchSimilarMovies()">Fetch similar movies</span>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchBoxOffice()">Get</span> 
+			Fetches movies currently at the box office.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchInTheaters()">Get</span>
+			Fetches movies currently at the theaters.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchOpeningMovies()">Get</span>
+			Fetches movies opening.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchUpcomingMovies()">Get</span>
+			Fetches upcoming movies.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchTopRentals()">Get</span>
+			Fetches top rental movies.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchCurrentRelease()">Get</span>
+			Fetches the current release DVDs.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchNewReleaseDVDs()">Get</span>
+			Fetches the new release DVDs.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchUpcomingDVDs()">Get</span>
+			Fetches the upcoming DVDs.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchSimilarMovies()">Get</span>
+			Fetches similar movies from the database.
+		</div>
 	</div>
 </body>
 
