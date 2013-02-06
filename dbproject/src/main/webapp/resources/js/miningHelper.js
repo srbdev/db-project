@@ -2,6 +2,9 @@ function MiningHelper()
 {
 	this.apiKey = 'gcdr3dgdxv2zafja7a8tmbby';
 	this.baseURL = 'http://api.rottentomatoes.com/api/public/v1.0';
+	
+	this.tmdApiKey = '4455acfbdecb2317fe15d970ff676214';
+	this.tmdBaseURL = 'http://api.themoviedb.org/3';
 }
 
 
@@ -43,6 +46,31 @@ MiningHelper.prototype.fetchNewReleaseDVDs = function()
 MiningHelper.prototype.fetchUpcomingDVDs = function()
 {
 	this.fetchMovieListWithPages('/dvds/upcoming', 50, 1);
+};
+
+MiningHelper.prototype.fetchTmdLatestMovies = function()
+{
+	
+};
+
+MiningHelper.prototype.fetchTmdUpcomingMovies = function()
+{
+	
+};
+
+MiningHelper.prototype.fetchTmdNowPlayingMovies = function()
+{
+	
+};
+
+MiningHelper.prototype.fetchTmdPopularMovies = function()
+{
+	
+};
+
+MiningHelper.prototype.fetchTopRatedMovies = function()
+{
+	
 };
 
 
@@ -136,4 +164,17 @@ MiningHelper.prototype.fetchMovieListWithPages = function(listType, amountPerPag
 		var query = this.baseURL + '/lists' + listType + '.json?apikey=' + this.apiKey + '&page_limit=' + amountPerPage + '&page=' + i + '&country=us';
 		this.runInsertMoviesIdsToDbAjax(query); 		
 	}
+};
+
+MiningHelper.prototype.fetchTmdMovies = function(url)
+{
+	$.ajax({
+		type: 'GET',
+		url: this.tmdBaseURL + url,
+		success: function(data) {
+			var dataObj = JSON.parse(JSON.stringify(data));
+			
+			console.log(dataObj);
+		}
+	});
 };

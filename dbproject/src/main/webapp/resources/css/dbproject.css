@@ -37,6 +37,11 @@ header
 	background: #F7F7F7;
 }
 
+.rtContentSection h2
+{
+	padding-left: 10px;
+}
+
 .appMainDiv
 {
 	background: #F7F7F7;
