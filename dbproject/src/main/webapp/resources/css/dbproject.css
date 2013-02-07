@@ -42,16 +42,39 @@ header
 	margin: 0px 0px 0px 0px;
 }
 
+.rtMainContentWithTitle
+{
+	padding: 0px 20px 10px 0px;
+}
+
 .sectionHeader
 {
 	background: #287BBC;
 	color: white;
 }
 
+.sectionTitle
+{
+	background: #333;
+	color: white;
+	padding: 8px 15px 8px 15px;
+	margin-bottom: 10px;
+}
+
+#stIdFetch
+{
+	width: 58px;
+}
+
+#stPopulateDb
+{
+	width: 90px;
+}
+
 .rtContentSection
 {
 	width: 100%;
-	margin: 2px 0px 2px 0px;
+	margin: 2px 0px 2px 10px;
 	padding: 1px;
 }
 

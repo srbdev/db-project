@@ -28,7 +28,10 @@
 			<h3>Rotten Tomatoes Database</h3>
 	</div>
 
-	<div class="rtMainContent">
+	<div class="rtMainContent rtMainContentWithTitle">
+		<div class="sectionTitle" id="stIdFetch">
+			ID FETCH
+		</div>
 		<div class="rtContentSection">
 			<span class="minerButton" onclick="miner.fetchBoxOffice()">Get</span> 
 			Fetches movies currently at the box office.
@@ -67,11 +70,20 @@
 		</div>
 	</div>
 	
+	<div class="rtMainContent rtMainContentWithTitle">
+		<div class="sectionTitle" id="stPopulateDb">
+			POPULATE DB
+		</div>
+	</div>
+	
 	<div class="rtMainContent sectionHeader">
 			<h3>The Movie Database</h3>
 	</div>
 	
-	<div class="rtMainContent">
+	<div class="rtMainContent rtMainContentWithTitle">
+		<div class="sectionTitle" id="stIdFetch">
+			ID FETCH
+		</div>
 		<div class="rtContentSection">
 			<span class="minerButton" onclick="miner.fetchTmdLatestMovie()">Get</span>
 			Fetches latest movie.
@@ -91,6 +103,12 @@
 		<div class="rtContentSection">
 			<span class="minerButton" onclick="miner.fetchTmdTopRatedMovies()">Get</span>
 			Fetches top rated movies.
+		</div>
+	</div>
+	
+	<div class="rtMainContent rtMainContentWithTitle">
+		<div class="sectionTitle" id="stPopulateDb">
+			POPULATE DB
 		</div>
 	</div>
 </body>
