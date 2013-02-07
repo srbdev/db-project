@@ -26,16 +26,12 @@ public class MinerController
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String miner(Model model) 
 	{
-		logger.info("miner page.");
-		
 		return "miner";
 	}
 	
 	@RequestMapping(value = "/fetchAllMovieIDs", method = RequestMethod.GET)
 	public @ResponseBody List<Movie> fetchAllMovieIDs()
 	{
-		logger.info("Ajax call to fetchAllMovieIDs.");
-		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		List<Movie> movieIDs = mDao.fetchAllMovieIDs();
@@ -46,8 +42,6 @@ public class MinerController
 	@RequestMapping(value = "/insertMovieIdsToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertMovieIdsToDb(@RequestParam(required = true) String data)
 	{
-		logger.info("Ajax call to insertMovieIdsToDb.");
-		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		String[] ids = data.split(",");
@@ -64,8 +58,6 @@ public class MinerController
 	@RequestMapping(value = "/insertTmdMovieIdsToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertTmdMovieIdsToDb(@RequestParam(required = true) String data)
 	{
-		logger.info("Ajax call to insertTmdMovieIdsToDb.");
-		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		String[] ids = data.split(",");
@@ -82,8 +74,6 @@ public class MinerController
 	@RequestMapping(value = "/updateCheckedSimilarMoviesStatus", method = RequestMethod.POST)
 	public @ResponseBody boolean updateCheckedSimilarMoviesStatus(@RequestParam(required = true) int id, @RequestParam(required = true) int status)
 	{
-		logger.info("Ajax call to updateCheckedSimilarMoviesStatus.");
-		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		

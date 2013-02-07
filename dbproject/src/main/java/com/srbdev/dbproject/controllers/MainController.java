@@ -15,8 +15,6 @@ public class MainController
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) 
 	{
-		logger.info("home page.");
-		
 		return "home";
 	}	
 }

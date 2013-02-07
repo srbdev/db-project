@@ -26,6 +26,34 @@ header
 	margin-bottom: 20px;
 }
 
+.subheaderLinks
+{
+	margin: 0px auto;
+	width: 800px;
+	height: 30px;
+}
+
+.subheaderLinks a
+{
+	font-size: 90%;
+	background: #333;
+	color: white;
+	text-decoration: none;
+	padding: 2px 10px 8px 10px;
+	margin-left: -4px;
+	border-bottom: 4px solid #333;
+}
+
+.subheaderLinks a:hover
+{
+	border-bottom: 4px solid #F8991D;
+}
+
+#selectedSubheaderLink
+{
+	border-bottom: 4px solid #F8991D;
+}
+
 .rtMainContent
 {
 	font-size: 90%;
@@ -67,6 +95,11 @@ header
 }
 
 #stPopulateDb
+{
+	width: 90px;
+}
+
+#stWelcome
 {
 	width: 90px;
 }

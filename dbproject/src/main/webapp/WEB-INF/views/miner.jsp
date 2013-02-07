@@ -21,7 +21,10 @@
 
 	<header></header>
 	<div class="subheader">
-		<a href="/dbproject">Home</a> <a href="/dbproject/miner/home">Miner</a>
+		<div class="subheaderLinks">
+			<a href="/dbproject">Home</a> 
+			<a id="selectedSubheaderLink" href="/dbproject/miner/home">Miner</a>
+		</div>
 	</div>
 
 	<div class="rtMainContent sectionHeader">
