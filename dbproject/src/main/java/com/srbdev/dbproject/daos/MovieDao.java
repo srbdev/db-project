@@ -43,12 +43,19 @@ public class MovieDao
 		return (List<Movie>) movies;
 	}
 	
-	public void insertMovieIDToDb(int id)
+	public void insertMovieIDToDb(int id, boolean flag)
 	{
-		String sql = "INSERT INTO movieIDsToFetch (id,checkedSimilarMovies,fetchedInfo) VALUES (?,?,?)";
+		String sql;
+		if (flag)
+			sql = "INSERT INTO movieIDsToFetch (id,checkedSimilarMovies,fetchedInfo) VALUES (?,?,?)";
+		else
+			sql = "INSERT INTO tmdMovieIDsToFetch (id,fetchedInfo) VALUES (?,?)";
 		
 		try {
-			jdbcTemplate.update(sql, new Object[] {id, 0, 0});
+			if (flag)
+				jdbcTemplate.update(sql, new Object[] {id, 0, 0});
+			else
+				jdbcTemplate.update(sql, new Object[] {id, 0});
 			
 			System.out.println("INFO : Successfully added movie ID " +  id);
 		} catch (DuplicateKeyException e) {

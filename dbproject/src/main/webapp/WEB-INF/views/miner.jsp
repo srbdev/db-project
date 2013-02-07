@@ -69,8 +69,8 @@
 			<p><h2>The Movie Database</h2></p>
 		</div>
 		<div class="rtContentSection">
-			<span class="minerButton" onclick="miner.fetchTmdLatestMovies()">Get</span>
-			Fetches latest movies.
+			<span class="minerButton" onclick="miner.fetchTmdLatestMovie()">Get</span>
+			Fetches latest movie.
 		</div>
 		<div class="rtContentSection">
 			<span class="minerButton" onclick="miner.fetchTmdUpcomingMovies()">Get</span>

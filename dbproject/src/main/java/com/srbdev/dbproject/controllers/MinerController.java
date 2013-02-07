@@ -55,7 +55,25 @@ public class MinerController
 		for (String id : ids)
 		{
 			if (id.length() > 0)
-				mDao.insertMovieIDToDb(Integer.parseInt(id));
+				mDao.insertMovieIDToDb(Integer.parseInt(id), true);
+		}
+		
+		return true;
+	}
+	
+	@RequestMapping(value = "/insertTmdMovieIdsToDb", method = RequestMethod.GET)
+	public @ResponseBody boolean insertTmdMovieIdsToDb(@RequestParam(required = true) String data)
+	{
+		logger.info("Ajax call to insertTmdMovieIdsToDb.");
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		MovieDao mDao = (MovieDao) context.getBean("movieDao");
+		String[] ids = data.split(",");
+		
+		for (String id : ids)
+		{
+			if (id.length() > 0)
+				mDao.insertMovieIDToDb(Integer.parseInt(id), false);
 		}
 		
 		return true;

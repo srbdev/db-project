@@ -48,29 +48,29 @@ MiningHelper.prototype.fetchUpcomingDVDs = function()
 	this.fetchMovieListWithPages('/dvds/upcoming', 50, 1);
 };
 
-MiningHelper.prototype.fetchTmdLatestMovies = function()
+MiningHelper.prototype.fetchTmdLatestMovie = function()
 {
-	
+	this.fetchTmdMovies('/movie/latest?api_key=' + this.tmdApiKey);
 };
 
 MiningHelper.prototype.fetchTmdUpcomingMovies = function()
 {
-	
+	this.fetchTmdMovies('/movie/upcoming?api_key=' + this.tmdApiKey);
 };
 
 MiningHelper.prototype.fetchTmdNowPlayingMovies = function()
 {
-	
+	this.fetchTmdMovies('/movie/now_playing?api_key=' + this.tmdApiKey);
 };
 
 MiningHelper.prototype.fetchTmdPopularMovies = function()
 {
-	
+	this.fetchTmdMovies('/movie/popular?api_key=' + this.tmdApiKey);
 };
 
-MiningHelper.prototype.fetchTopRatedMovies = function()
+MiningHelper.prototype.fetchTmdTopRatedMovies = function()
 {
-	
+	this.fetchTmdMovies('/movie/top_rated?api_key=' + this.tmdApiKey);
 };
 
 
@@ -139,6 +139,29 @@ MiningHelper.prototype.insertMoviesIdsToDb = function(data)
 	});
 };
 
+MiningHelper.prototype.insertTmdMoviesIdsToDb = function(data)
+{
+	var stringIds = '';
+
+	if (data.results === undefined)
+		stringIds = data.id;
+	else
+	{
+		$.each(data.results, function(index, value) {
+			stringIds += value.id + ',';
+		});
+	}
+	
+	$.ajax({
+		type: 'GET',
+		url: '../miner/insertTmdMovieIdsToDb',
+		data: {data: stringIds},
+		success: function(data) {
+			
+		}
+	});
+};
+
 MiningHelper.prototype.updateCheckedSimilarMoviesStatus = function(id, status)
 {
 	$.ajax({
@@ -171,10 +194,6 @@ MiningHelper.prototype.fetchTmdMovies = function(url)
 	$.ajax({
 		type: 'GET',
 		url: this.tmdBaseURL + url,
-		success: function(data) {
-			var dataObj = JSON.parse(JSON.stringify(data));
-			
-			console.log(dataObj);
-		}
+		success: this.insertTmdMoviesIdsToDb
 	});
 };
