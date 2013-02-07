@@ -10,11 +10,10 @@
 </head>
 
 <body>
-	<header>
-		Ripe Tomatoes
-		
-		<p><a href="/dbproject">Home</a> <a href="/dbproject/miner/home">Miner</a></p>
-	</header>
+	<header></header>
+	<div class="subheader">
+		<a href="/dbproject">Home</a> <a href="/dbproject/miner/home">Miner</a>
+	</div>
 
 	<div class="rtMainContent">
 		db-project home

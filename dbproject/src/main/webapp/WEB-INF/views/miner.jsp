@@ -19,16 +19,16 @@
 		});
 	</script>
 
-	<header>
-		Ripe Tomatoes
-		
-		<p><a href="/dbproject">Home</a> <a href="/dbproject/miner/home">Miner</a></p>
-	</header>
+	<header></header>
+	<div class="subheader">
+		<a href="/dbproject">Home</a> <a href="/dbproject/miner/home">Miner</a>
+	</div>
+
+	<div class="rtMainContent sectionHeader">
+			<h3>Rotten Tomatoes Database</h3>
+	</div>
 
 	<div class="rtMainContent">
-		<div class="rtContentSection">
-			<p><h2>Rotten Tomatoes Database</h2></p>
-		</div>
 		<div class="rtContentSection">
 			<span class="minerButton" onclick="miner.fetchBoxOffice()">Get</span> 
 			Fetches movies currently at the box office.
@@ -65,9 +65,13 @@
 			<span class="minerButton" onclick="miner.fetchSimilarMovies()">Get</span>
 			Fetches similar movies from the database.
 		</div>
-		<div class="rtContentSection">
-			<p><h2>The Movie Database</h2></p>
-		</div>
+	</div>
+	
+	<div class="rtMainContent sectionHeader">
+			<h3>The Movie Database</h3>
+	</div>
+	
+	<div class="rtMainContent">
 		<div class="rtContentSection">
 			<span class="minerButton" onclick="miner.fetchTmdLatestMovie()">Get</span>
 			Fetches latest movie.
