@@ -116,6 +116,12 @@ header
 	padding-left: 10px;
 }
 
+.rtContentSection a 
+{
+	text-decoration: none;
+	color: #F8991D;
+}
+
 .appMainDiv
 {
 	background: #F7F7F7;

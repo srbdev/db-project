@@ -23,13 +23,17 @@ public class MovieDao
 	}
 	
 	
+	/**
+	 * Returns a list of movie IDs that have not been checked for similarity yet.
+	 * 
+	 * @return A list of movie IDs
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Movie> fetchAllMovieIDs()
 	{
 		String sql = "SELECT id FROM movieIDsToFetch WHERE checkedSimilarMovies = 0";
 		
 		Collection movies = jdbcTemplate.query(sql, new RowMapper() {
-			
 			public Object mapRow(ResultSet rs, int rowNum) throws SQLException 
 			{
 				Movie movie = new Movie();
@@ -37,11 +41,56 @@ public class MovieDao
 				
 				return movie;
 			}
-			
 		});
 		
 		return (List<Movie>) movies;
 	}
+	
+	/**
+	 * Returns a list of movie IDs that have not been mined yet for the Rotten Tomatoes database.
+	 * 
+	 * @return A list of movie IDs
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Movie> fetchRTMovieIDsForMining()
+	{
+		String sql = "SELECT id FROM movieIDsToFetch WHERE fetchedInfo = 0";
+		
+		Collection movies = jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Movie movie = new Movie();
+				movie.setId(rs.getInt("id"));
+				
+				return movie;
+			}
+		});
+		
+		return (List<Movie>) movies;
+	}
+	
+	/**
+	 * Returns a list of movie IDs that have not been mined yet for The Movie Database.
+	 * 
+	 * @return A list of movie IDs
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Movie> fetchTMDMovieIDsForMining()
+	{
+		String sql = "SELECT id FROM tmdMovieIDsToFetch WHERE fetchedInfo = 0";
+		
+		Collection movies = jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Movie movie = new Movie();
+				movie.setId(rs.getInt("id"));
+				
+				return movie;
+			}
+		});
+		
+		return (List<Movie>) movies;
+	}	
 	
 	public void insertMovieIDToDb(int id, boolean flag)
 	{
@@ -66,6 +115,20 @@ public class MovieDao
 	public void updateCheckedSimilarMoviesStatus(int id, int status)
 	{
 		String sql = "UPDATE movieIDsToFetch SET checkedSimilarMovies = ? WHERE id = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {status, id});
+	}
+	
+	public void updateFetchInformationStatusForRT(int id, int status)
+	{
+		String sql = "UPDATE movieIDsToFetch SET fetchedInfo = ? WHERE id = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {status, id});
+	}
+	
+	public void updateFetchInformationStatusForTMD(int id, int status)
+	{
+		String sql = "UPDATE tmdMovieIDsToFetch SET fetchedInfo = ? WHERE id = ?";
 		
 		jdbcTemplate.update(sql, new Object[] {status, id});
 	}

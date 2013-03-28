@@ -74,6 +74,95 @@ MiningHelper.prototype.fetchTmdTopRatedMovies = function()
 };
 
 
+MiningHelper.prototype.fetchRTMovieIdsFromDb = function()
+{
+	var helper = this;
+
+	$.ajax({
+		type: 'GET',
+		url: '../miner/fetchMovieIDsForMining',
+		data: {type: true},
+		dataType: 'json', 
+		success: function(data) {
+			helper.fetchMovieInformationProcess(data, 'rt');
+		}
+	});
+};
+
+MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
+{
+	var helper = this;
+
+	$.ajax({
+		type: 'GET',
+		url: '../miner/fetchMovieIDsForMining',
+		data: {type: false},
+		dataType: 'json', 
+		success: function(data) {
+			console.log(helper);
+		}
+	});
+};
+
+MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType) 
+{
+	var helper = this;
+	var time = 125;
+
+	$.each(data, function(index, value) {
+		setTimeout(function() {
+			if (dbType === 'rt')
+			{
+				helper.fetchSingleMovieInformationFromRT(value.id);
+				helper.updateFetchedInfoFlag(value.id, 1, true);
+			}
+			else if (dbType === 'tmd')
+			{
+
+			}
+		
+		}, time);
+
+		time += 125;
+	});
+};
+
+MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
+{
+	var query = this.baseURL + '/movies/' + id + '.json?apikey=' + this.apiKey;
+
+	var insertMovieInformationToDb = function(movie) {
+		$.ajax({
+			type: 'POST',
+			url: '',
+			data: {},
+			success: function(data) {}
+		});
+	};
+
+	$.ajax({
+		type: 'GET',
+		url: query,
+		dataType: 'jsonp',
+		success: function(data) {
+			insertMovieInformationToDb(data);
+		}
+	});
+};
+
+MiningHelper.prototype.updateFetchedInfoFlag = function(id, status, dbType)
+{
+	$.ajax({
+		type: 'POST',
+		url: '../miner/updateFetchedInfoFlag',
+		data: {id: id, status: status, type: dbType},
+		success: function(data) {
+			
+		}
+	});
+};
+
+
 MiningHelper.prototype.fetchSimilarMovies = function()
 {
 	var helper = this;
@@ -168,9 +257,7 @@ MiningHelper.prototype.updateCheckedSimilarMoviesStatus = function(id, status)
 		type: 'POST',
 		url: '../miner/updateCheckedSimilarMoviesStatus',
 		data: {id: id, status: status},
-		success: function(data) {
-			
-		}
+		success: function(data) {}
 	});
 };
 

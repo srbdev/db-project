@@ -77,6 +77,10 @@
 		<div class="sectionTitle" id="stPopulateDb">
 			POPULATE DB
 		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchRTMovieIdsFromDb()">Get</span>
+			Mines for movie information.
+		</div>
 	</div>
 	
 	<div class="rtMainContent sectionHeader">
@@ -112,6 +116,10 @@
 	<div class="rtMainContent rtMainContentWithTitle">
 		<div class="sectionTitle" id="stPopulateDb">
 			POPULATE DB
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.fetchTMDMovieIdsFromDb()">Get</span>
+			Mines for movie information.
 		</div>
 	</div>
 </body>

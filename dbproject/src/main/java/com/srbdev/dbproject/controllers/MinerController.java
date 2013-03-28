@@ -2,8 +2,6 @@ package com.srbdev.dbproject.controllers;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -21,7 +19,7 @@ import com.srbdev.dbproject.model.Movie;
 @RequestMapping(value = "/miner")
 public class MinerController 
 {
-	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+//	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String miner(Model model) 
@@ -35,6 +33,16 @@ public class MinerController
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		List<Movie> movieIDs = mDao.fetchAllMovieIDs();
+		
+		return movieIDs;
+	}
+	
+	@RequestMapping(value = "/fetchMovieIDsForMining")
+	public @ResponseBody List<Movie> fetchRTMovieIDsForMining(@RequestParam(required = true) boolean type)
+	{
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		MovieDao mDao = (MovieDao) context.getBean("movieDao");
+		List<Movie> movieIDs = type == true ? mDao.fetchRTMovieIDsForMining() : mDao.fetchTMDMovieIDsForMining();
 		
 		return movieIDs;
 	}
@@ -78,6 +86,20 @@ public class MinerController
 		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		
 		mDao.updateCheckedSimilarMoviesStatus(id, status);
+		
+		return true;
+	}
+	
+	@RequestMapping(value = "/updateFetchedInfoFlag", method = RequestMethod.POST)
+	public @ResponseBody boolean updateFetchedInfoFlag(@RequestParam(required = true) int id, @RequestParam(required = true) int status, @RequestParam(required = true) boolean type)
+	{
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		MovieDao mDao = (MovieDao) context.getBean("movieDao");
+		
+		if (type)
+			mDao.updateFetchInformationStatusForRT(id, status);
+		else
+			mDao.updateFetchInformationStatusForTMD(id, status);
 		
 		return true;
 	}
