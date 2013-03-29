@@ -1,5 +1,6 @@
 package com.srbdev.dbproject.controllers;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -20,6 +21,8 @@ import com.srbdev.dbproject.model.Movie;
 public class MinerController 
 {
 //	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+	private ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+	private MovieDao movieDao = (MovieDao) context.getBean("movieDao");
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String miner(Model model) 
@@ -30,34 +33,26 @@ public class MinerController
 	@RequestMapping(value = "/fetchAllMovieIDs", method = RequestMethod.GET)
 	public @ResponseBody List<Movie> fetchAllMovieIDs()
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		MovieDao mDao = (MovieDao) context.getBean("movieDao");
-		List<Movie> movieIDs = mDao.fetchAllMovieIDs();
-		
+		List<Movie> movieIDs = movieDao.fetchAllMovieIDs();
 		return movieIDs;
 	}
 	
 	@RequestMapping(value = "/fetchMovieIDsForMining")
 	public @ResponseBody List<Movie> fetchRTMovieIDsForMining(@RequestParam(required = true) boolean type)
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		MovieDao mDao = (MovieDao) context.getBean("movieDao");
-		List<Movie> movieIDs = type == true ? mDao.fetchRTMovieIDsForMining() : mDao.fetchTMDMovieIDsForMining();
-		
+		List<Movie> movieIDs = type == true ? movieDao.fetchRTMovieIDsForMining() : movieDao.fetchTMDMovieIDsForMining();
 		return movieIDs;
 	}
 	
 	@RequestMapping(value = "/insertMovieIdsToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertMovieIdsToDb(@RequestParam(required = true) String data)
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		String[] ids = data.split(",");
 		
 		for (String id : ids)
 		{
 			if (id.length() > 0)
-				mDao.insertMovieIDToDb(Integer.parseInt(id), true);
+				movieDao.insertMovieIDToDb(Integer.parseInt(id), true);
 		}
 		
 		return true;
@@ -66,14 +61,12 @@ public class MinerController
 	@RequestMapping(value = "/insertTmdMovieIdsToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertTmdMovieIdsToDb(@RequestParam(required = true) String data)
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		String[] ids = data.split(",");
 		
 		for (String id : ids)
 		{
 			if (id.length() > 0)
-				mDao.insertMovieIDToDb(Integer.parseInt(id), false);
+				movieDao.insertMovieIDToDb(Integer.parseInt(id), false);
 		}
 		
 		return true;
@@ -87,14 +80,12 @@ public class MinerController
 	@RequestMapping(value = "/insertSimilarMoviesInformationToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertSimilarMoviesInformationToDb(@RequestParam(required = true) int id, @RequestParam(required = true) String data)
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		MovieDao mDao = (MovieDao) context.getBean("movieDao");
 		String[] ids = data.split(",");
 		
 		for (String s : ids)
 		{
 			if (s.length() > 0)
-				mDao.insertSimilarMovieInformationToDb(id, Integer.parseInt(s));
+				movieDao.insertSimilarMovieInformationToDb(id, Integer.parseInt(s));
 		}
 		
 		return true;
@@ -103,10 +94,63 @@ public class MinerController
 	@RequestMapping(value = "/insertMovieInformationToDbFromRT", method = RequestMethod.GET)
 	public @ResponseBody boolean insertMovieInformationToDbFromRT(@RequestParam(required = true) int id, @RequestParam(required = true) String title, @RequestParam(required = true) int year, @RequestParam(required = true) int runtime, @RequestParam(required = true) String rating, @RequestParam(required = true) String posterUrl)
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		MovieDao mDao = (MovieDao) context.getBean("movieDao");
+		movieDao.insertMovieToDbFromRTData(id, title, year, runtime, rating, posterUrl);
+		return true;
+	}
+	
+	@RequestMapping(value = "/insertDirectorInformationToDb", method = RequestMethod.GET)
+	public @ResponseBody boolean insertDirectorInformationToDb(@RequestParam(required = true) String name, @RequestParam(required = true) int id)
+	{
+		movieDao.insertDirectorInformationToDb(name);
 		
-		mDao.insertMovieToDbFromRTData(id, title, year, runtime, rating, posterUrl);
+		int directorId = movieDao.fetchIdForDirector(name);
+		movieDao.updateMovieWithDirectorId(id, directorId);
+		
+		return true;
+	}
+	
+	@RequestMapping(value = "/insertStudioInformationToDb", method = RequestMethod.GET)
+	public @ResponseBody boolean insertStudioInformationToDb(@RequestParam(required = true) String name, @RequestParam(required = true) int id)
+	{
+		movieDao.insertStudioInformationToDb(name);
+		
+		int studioId = movieDao.fetchIdForStudio(name);
+		movieDao.updateMovieWithStudioId(id, studioId);
+		
+		return true;
+	}
+	
+	@RequestMapping(value = "/insertCastInformationToDb", method = RequestMethod.GET)
+	public @ResponseBody boolean insertCastInformationToDb(@RequestParam(required = true) int movieId, @RequestParam(required = true) int actorId, @RequestParam(required = true) String actorName, @RequestParam(required = true) String characters)
+	{
+		movieDao.insertActorInformationToDb(actorId, actorName);
+		movieDao.insertCastInformationToDb(movieId, actorId, characters);
+		
+		return true;
+	}
+	
+	@RequestMapping(value = "/insertGenreInformationToDb", method = RequestMethod.GET)
+	public @ResponseBody boolean insertGenreInformationToDb(@RequestParam(required = true) int movieId, @RequestParam(required = true) String type)
+	{
+		movieDao.insertGenreToDb(type);
+		movieDao.insertIsOfGenreInformationToDb(movieId, type);
+		
+		return true;
+	}
+	
+	@RequestMapping(value = "/insertReviewInformationToDb", method = RequestMethod.GET)
+	public @ResponseBody boolean insertReviewInformationToDb(@RequestParam(required = true) int movieId, @RequestParam(required = true) String critic, @RequestParam(required = true) Date date, String publication, String score, String quote)
+	{
+		movieDao.insertReviewerInformationToDb(critic);
+		
+		int reviewerId = movieDao.fetchIdForReviewer(critic);
+		if (publication == null) publication = "NULL";
+		if (score == null) score = "NULL";
+		if (quote == null) quote = "NULL";
+		movieDao.insertReviewInformationToDb(reviewerId, date, publication, score, quote);
+		
+		int reviewId = movieDao.fetchIdForReview(reviewerId, date);
+		movieDao.insertReviewedByInformationToDb(movieId, reviewId);
 		
 		return true;
 	}
@@ -119,24 +163,17 @@ public class MinerController
 	@RequestMapping(value = "/updateCheckedSimilarMoviesStatus", method = RequestMethod.POST)
 	public @ResponseBody boolean updateCheckedSimilarMoviesStatus(@RequestParam(required = true) int id, @RequestParam(required = true) int status)
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		MovieDao mDao = (MovieDao) context.getBean("movieDao");
-		
-		mDao.updateCheckedSimilarMoviesStatus(id, status);
-		
+		movieDao.updateCheckedSimilarMoviesStatus(id, status);
 		return true;
 	}
 	
 	@RequestMapping(value = "/updateFetchedInfoFlag", method = RequestMethod.POST)
 	public @ResponseBody boolean updateFetchedInfoFlag(@RequestParam(required = true) int id, @RequestParam(required = true) int status, @RequestParam(required = true) boolean type)
 	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		MovieDao mDao = (MovieDao) context.getBean("movieDao");
-		
 		if (type)
-			mDao.updateFetchInformationStatusForRT(id, status);
+			movieDao.updateFetchInformationStatusForRT(id, status);
 		else
-			mDao.updateFetchInformationStatusForTMD(id, status);
+			movieDao.updateFetchInformationStatusForTMD(id, status);
 		
 		return true;
 	}

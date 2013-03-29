@@ -171,6 +171,103 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 		});
 	};
 
+	var insertDirectorInformationToDb = function(movie)
+	{
+		var director = movie.abridged_directors[0].name;
+		var id = movie.id;
+
+		$.ajax({
+			type: 'GET',
+			url: '../miner/insertDirectorInformationToDb',
+			data: {name: director, id: id},
+			success: function(data) {}
+		});
+	};
+
+	var insertStudioInformationToDb = function(movie)
+	{
+		var studio = movie.studio;
+		var id = movie.id;
+
+		$.ajax({
+			type: 'GET',
+			url: '../miner/insertStudioInformationToDb',
+			data: {name: studio, id: id},
+			success: function(data) {}
+		});
+	};
+
+	var insertCastInformationToDb = function(movie)
+	{
+		var cast = movie.abridged_cast;
+		var movieId = movie.id;
+
+		$.each(cast, function(index, value) {
+
+			$.ajax({
+				type: 'GET',
+				url: '../miner/insertCastInformationToDb',
+				data: {movieId: movieId, actorId: value.id, actorName: value.name, characters: value.characters.join()},
+				success: function(data) {}
+			});
+
+		});
+	};
+
+	var insertGenreInformationToDb = function(movie)
+	{
+		var genres = movie.genres;
+		var movieId = movie.id;
+
+		$.each(genres, function(index, value) {
+
+			$.ajax({
+				type: 'GET',
+				url: '../miner/insertGenreInformationToDb',
+				data: {movieId: movieId, type: value},
+				success: function(data) {}
+			});
+
+		});
+	};
+
+	var insertReviewInformationToDb = function(movie)
+	{
+		var movieId = movie.id;
+		var query = helper.baseURL + '/movies/' + movie.id + '/reviews.json?review_type=all&page_limit=20&page=1&country=us&apikey=' + helper.apiKey;
+
+		$.ajax({
+			type: 'GET',
+			url: query,
+			dataType: 'jsonp',
+			success: function(data) {
+				
+				var reviews = data.reviews;
+
+				$.each(reviews, function(index, value) {
+
+					var params = {};
+					params.movieId = movieId;
+					params.critic = value.critic;
+					params.date = value.date;
+
+					if (value.publication) params.publication = value.publication;
+					if (value.original_score) params.score = value.original_score;
+					if (value.quote) params.quote = value.quote;
+
+					$.ajax({
+						type: 'GET',
+						url: '../miner/insertReviewInformationToDb',
+						data: params,
+						success: function(data) {}
+					});
+
+				});
+
+			}
+		});
+	};
+
 	/**
 	 * [END]
 	 */
@@ -182,8 +279,13 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 		success: function(data) {
 
 			// List of functions to update information in the db
-			insertMovieInformationToDb(data);
+			// insertMovieInformationToDb(data);
 			// insertSimilarMoviesInformationToDb(data);
+			// insertDirectorInformationToDb(data);
+			// insertStudioInformationToDb(data);
+			// insertCastInformationToDb(data);
+			// insertGenreInformationToDb(data);
+			// insertReviewInformationToDb(data);
 		
 		}
 	});
