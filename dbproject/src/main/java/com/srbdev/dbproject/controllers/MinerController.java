@@ -155,6 +155,27 @@ public class MinerController
 		return true;
 	}
 	
+	@RequestMapping(value = "/updateActorInformationFromTMD", method = RequestMethod.POST)
+	public @ResponseBody boolean updateActorInformationFromTMD(@RequestParam(required = true) String name, String aka, Date birthday, Date deathday, String birthplace, String pictureURL)
+	{
+		movieDao.updateActorInformationFromTMD(name, aka, birthday, deathday, birthplace, pictureURL);		
+		return true;
+	}
+	
+	@RequestMapping(value = "/updateStudioInformationFromTMD", method = RequestMethod.POST)
+	public @ResponseBody boolean updateStudioInformationFromTMD(@RequestParam(required = true) String name, String headquarters, String homepage)
+	{
+		movieDao.updateStudioInformationFromTMD(name, headquarters, homepage);
+		return true;
+	}
+	
+	@RequestMapping(value = "/updateMovieInformationFromTMD", method = RequestMethod.POST)
+	public @ResponseBody boolean updateMovieInformationFromTMD(@RequestParam(required = true) String title, int revenue, int budget)
+	{
+		movieDao.updateMovieInformationFromTMD(title, revenue, budget);
+		return true;
+	}
+	
 	/**
 	 * ACTUAL MINING URLs [END]
 	 */

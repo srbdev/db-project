@@ -1,3 +1,7 @@
+/**
+ * The MiningHelper object handles the mining functionality for the front-end of
+ * the application.
+ */
 function MiningHelper() 
 {
 	this.apiKey = 'gcdr3dgdxv2zafja7a8tmbby';
@@ -7,7 +11,11 @@ function MiningHelper()
 	this.tmdBaseURL = 'http://api.themoviedb.org/3';
 }
 
-
+/**
+ * This section contains functions that fetches the movie IDs from the different
+ * API calls available to the Rotten Tomatoes movie database and The Movie 
+ * Database.
+ */
 MiningHelper.prototype.fetchBoxOffice = function() 
 {
 	this.fetchMovieList('/movies/box_office', 22);
@@ -72,8 +80,14 @@ MiningHelper.prototype.fetchTmdTopRatedMovies = function()
 {
 	this.fetchTmdMovies('/movie/top_rated?api_key=' + this.tmdApiKey);
 };
+/**
+ * Section [END]
+ */
 
 
+/**
+ * Fetches the list of IDs collected from the Rotten Tomatoes movie database.
+ */
 MiningHelper.prototype.fetchRTMovieIdsFromDb = function()
 {
 	var helper = this;
@@ -84,11 +98,16 @@ MiningHelper.prototype.fetchRTMovieIdsFromDb = function()
 		data: {type: true},
 		dataType: 'json', 
 		success: function(data) {
+			// This is function is called if the list of movie IDs returns 
+			// successfully from the db
 			helper.fetchMovieInformationProcess(data, 'rt');
 		}
 	});
 };
 
+/**
+ * Fetches the list of IDs collected from The Movie Database.
+ */
 MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
 {
 	var helper = this;
@@ -99,17 +118,30 @@ MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
 		data: {type: false},
 		dataType: 'json', 
 		success: function(data) {
+			// This is function is called if the list of movie IDs returns 
+			// successfully from the db
 			helper.fetchMovieInformationProcess(data, 'tmd');
 		}
 	});
 };
 
+/**
+ * This function handles the list of movie IDs collected and populates the db for
+ * the project using the adequate function depending if the IDs come from the
+ * Rotten Tomatoes movie database or The Movie Database.
+ * @param  {[type]} data   list of movie IDs
+ * @param  {[type]} dbType 'rt' for Rotten Tomatoes and 'tmd' for The Movie Database
+ */
 MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType) 
 {
 	var helper = this;
 	var time = 500;
 
+	// Loops over each single ID from the inputted list
 	$.each(data, function(index, value) {
+
+		// A timeout is included because limited to only 10 queries a second from the
+		// open APIs
 		setTimeout(function() {
 			if (dbType === 'rt')
 				helper.fetchSingleMovieInformationFromRT(value.id);
@@ -122,6 +154,11 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 	});
 };
 
+/**
+ * The function handles populating the db for the project from the information
+ * from The Movie Database.
+ * @param  {[type]} id a single movie ID
+ */
 MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
 {
 	var helper = this;
@@ -136,6 +173,11 @@ MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
 	 */
 }
 
+/**
+ * This function handles populating the db for the project from the information
+ * from the Rotten Tomatoes movie database.
+ * @param  {[type]} id a single movie ID
+ */
 MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 {
 	var helper = this;
@@ -151,6 +193,8 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 			data: {id: movie.id, title: movie.title, year: movie.year, runtime: movie.runtime, rating: movie.mpaa_rating, posterUrl: movie.posters.profile},
 			success: function(data) {
 				if (data === true)
+					// Puts a flag in the list of movie IDs so no need to collect twice and
+					// waste the allowed queries.
 					helper.updateFetchedInfoFlag(movie.id, 1, true);
 			}
 		});
@@ -279,11 +323,13 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 			}
 		});
 	};
-
 	/**
 	 * [END]
 	 */
 	
+	// This call to the open API gets the information about a movie by its ID and
+	// if returning successfully, it populates the database for the project with
+	// all the necessary information.
 	$.ajax({
 		type: 'GET',
 		url: query,
@@ -303,6 +349,12 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 	});
 };
 
+/**
+ * Updates the flag when a movie information has been fetched once.
+ * @param  {[type]} id     movie ID
+ * @param  {[type]} status fetched or unfetched
+ * @param  {[type]} dbType Rotten Tomatoes movie database or The Movie Database
+ */
 MiningHelper.prototype.updateFetchedInfoFlag = function(id, status, dbType)
 {
 	$.ajax({
