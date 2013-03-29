@@ -99,7 +99,7 @@ MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
 		data: {type: false},
 		dataType: 'json', 
 		success: function(data) {
-			console.log(helper);
+			helper.fetchMovieInformationProcess(data, 'tmd');
 		}
 	});
 };
@@ -114,15 +114,27 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 			if (dbType === 'rt')
 				helper.fetchSingleMovieInformationFromRT(value.id);
 			else if (dbType === 'tmd')
-			{
-
-			}
+				helper.fetchSingleMovieInformationFromTMD(value.id);
 		
 		}, time);
 
 		time += 500;
 	});
 };
+
+MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
+{
+	var helper = this;
+	var query = this.tmdBaseURL + '/movie/' + id + '?api_key=' + this.tmdApiKey;
+
+	/**
+	 * This section includes the definition for the functions updating the information for the movies
+	 */
+	
+	/**
+	 * [END]
+	 */
+}
 
 MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 {
@@ -138,8 +150,8 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 			url: 'insertMovieInformationToDbFromRT',
 			data: {id: movie.id, title: movie.title, year: movie.year, runtime: movie.runtime, rating: movie.mpaa_rating, posterUrl: movie.posters.profile},
 			success: function(data) {
-				// if (data === true)
-				// 	helper.updateFetchedInfoFlag(movie.id, 1, true);
+				if (data === true)
+					helper.updateFetchedInfoFlag(movie.id, 1, true);
 			}
 		});
 	};
@@ -279,13 +291,13 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 		success: function(data) {
 
 			// List of functions to update information in the db
-			// insertMovieInformationToDb(data);
-			// insertSimilarMoviesInformationToDb(data);
-			// insertDirectorInformationToDb(data);
-			// insertStudioInformationToDb(data);
-			// insertCastInformationToDb(data);
-			// insertGenreInformationToDb(data);
-			// insertReviewInformationToDb(data);
+			insertMovieInformationToDb(data);
+			insertSimilarMoviesInformationToDb(data);
+			insertDirectorInformationToDb(data);
+			insertStudioInformationToDb(data);
+			insertCastInformationToDb(data);
+			insertGenreInformationToDb(data);
+			insertReviewInformationToDb(data);
 		
 		}
 	});
