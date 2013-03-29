@@ -107,15 +107,12 @@ MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
 MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType) 
 {
 	var helper = this;
-	var time = 125;
+	var time = 500;
 
 	$.each(data, function(index, value) {
 		setTimeout(function() {
 			if (dbType === 'rt')
-			{
 				helper.fetchSingleMovieInformationFromRT(value.id);
-				helper.updateFetchedInfoFlag(value.id, 1, true);
-			}
 			else if (dbType === 'tmd')
 			{
 
@@ -123,29 +120,71 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 		
 		}, time);
 
-		time += 125;
+		time += 500;
 	});
 };
 
 MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 {
+	var helper = this;
 	var query = this.baseURL + '/movies/' + id + '.json?apikey=' + this.apiKey;
 
+	/**
+	 * This section includes the definition for the functions updating the information for the movies
+	 */
 	var insertMovieInformationToDb = function(movie) {
 		$.ajax({
-			type: 'POST',
-			url: '',
-			data: {},
-			success: function(data) {}
+			type: 'GET',
+			url: 'insertMovieInformationToDbFromRT',
+			data: {id: movie.id, title: movie.title, year: movie.year, runtime: movie.runtime, rating: movie.mpaa_rating, posterUrl: movie.posters.profile},
+			success: function(data) {
+				// if (data === true)
+				// 	helper.updateFetchedInfoFlag(movie.id, 1, true);
+			}
 		});
 	};
 
+	var insertSimilarMoviesInformationToDb = function(movie)
+	{
+		var query = helper.baseURL + '/movies/' + movie.id + '/similar.json?apikey=' + helper.apiKey + '&limit=5';
+		var mId = movie.id;
+	
+		$.ajax({
+			type: 'GET',
+			url: query,
+			dataType: 'jsonp',
+			success: function(data) {
+				var dataObj = JSON.parse(JSON.stringify(data));
+				var stringIds = '';
+				
+				$.each(dataObj.movies, function(index, value) {
+					stringIds += value.id + ',';
+				});
+				
+				$.ajax({
+					type: 'GET',
+					url: '../miner/insertSimilarMoviesInformationToDb',
+					data: {id: mId, data: stringIds},
+					success: function(data) {}
+				});
+			}
+		});
+	};
+
+	/**
+	 * [END]
+	 */
+	
 	$.ajax({
 		type: 'GET',
 		url: query,
 		dataType: 'jsonp',
 		success: function(data) {
+
+			// List of functions to update information in the db
 			insertMovieInformationToDb(data);
+			// insertSimilarMoviesInformationToDb(data);
+		
 		}
 	});
 };
@@ -156,9 +195,7 @@ MiningHelper.prototype.updateFetchedInfoFlag = function(id, status, dbType)
 		type: 'POST',
 		url: '../miner/updateFetchedInfoFlag',
 		data: {id: id, status: status, type: dbType},
-		success: function(data) {
-			
-		}
+		success: function(data) {}
 	});
 };
 
@@ -222,9 +259,7 @@ MiningHelper.prototype.insertMoviesIdsToDb = function(data)
 		type: 'GET',
 		url: '../miner/insertMovieIdsToDb',
 		data: {data: stringIds},
-		success: function(data) {
-			
-		}
+		success: function(data) {}
 	});
 };
 
@@ -245,9 +280,7 @@ MiningHelper.prototype.insertTmdMoviesIdsToDb = function(data)
 		type: 'GET',
 		url: '../miner/insertTmdMovieIdsToDb',
 		data: {data: stringIds},
-		success: function(data) {
-			
-		}
+		success: function(data) {}
 	});
 };
 

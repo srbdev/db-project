@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -92,6 +93,7 @@ public class MovieDao
 		return (List<Movie>) movies;
 	}	
 	
+	
 	public void insertMovieIDToDb(int id, boolean flag)
 	{
 		String sql;
@@ -111,6 +113,38 @@ public class MovieDao
 			System.err.println("ERROR : Duplicate entry movie ID " + id);
 		}
 	}
+	
+	
+	public void insertMovieToDbFromRTData(int id, String title, int year, int runtime, String rating, String posterUrl)
+	{
+		String sql = "INSERT INTO Movies (id, title, year, runtime, rating, poster_url) VALUES (?,?,?,?,?,?)";
+		
+		try {
+			jdbcTemplate.update(sql, new Object[] {id, title, year, runtime, rating, posterUrl});
+			System.out.println("INFO : Successfully added movie (" +  id + ") title=" + title);
+		} catch (DuplicateKeyException e) {
+			System.err.println("ERROR : Duplicate entry movie ID " + id);
+		} catch (DataIntegrityViolationException e)
+		{
+			System.err.println("ERROR : Data integrity violation enty movie ID " + id + " {" + title + "," + year  + "," + runtime + "," + rating + "}");
+		}
+	}
+	
+	public void insertSimilarMovieInformationToDb(int id1, int id2)
+	{
+		String sql = "INSERT INTO isSimilar (movie1Id, movie2Id) VALUES (?,?)";
+		
+		try {
+			jdbcTemplate.update(sql, new Object[] {id1, id2});
+			System.out.println("INFO : Successfully added similar movies: " +  id1 + ", " + id2);
+		} catch (DuplicateKeyException e) {
+			System.err.println("ERROR : Duplicate entry movies IDs " + id1 + ", " + id2);
+		} catch (DataIntegrityViolationException e)
+		{
+			System.err.println("ERROR : Data integrity violation enty movie IDs " + id1 + ", " + id2);
+		}
+	}
+	
 	
 	public void updateCheckedSimilarMoviesStatus(int id, int status)
 	{

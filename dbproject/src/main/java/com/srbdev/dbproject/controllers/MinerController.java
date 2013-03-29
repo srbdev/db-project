@@ -79,6 +79,43 @@ public class MinerController
 		return true;
 	}
 	
+	
+	/**
+	 * ACTUAL MINING URLs [START]
+	 */
+	
+	@RequestMapping(value = "/insertSimilarMoviesInformationToDb", method = RequestMethod.GET)
+	public @ResponseBody boolean insertSimilarMoviesInformationToDb(@RequestParam(required = true) int id, @RequestParam(required = true) String data)
+	{
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		MovieDao mDao = (MovieDao) context.getBean("movieDao");
+		String[] ids = data.split(",");
+		
+		for (String s : ids)
+		{
+			if (s.length() > 0)
+				mDao.insertSimilarMovieInformationToDb(id, Integer.parseInt(s));
+		}
+		
+		return true;
+	}
+	
+	@RequestMapping(value = "/insertMovieInformationToDbFromRT", method = RequestMethod.GET)
+	public @ResponseBody boolean insertMovieInformationToDbFromRT(@RequestParam(required = true) int id, @RequestParam(required = true) String title, @RequestParam(required = true) int year, @RequestParam(required = true) int runtime, @RequestParam(required = true) String rating, @RequestParam(required = true) String posterUrl)
+	{
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		MovieDao mDao = (MovieDao) context.getBean("movieDao");
+		
+		mDao.insertMovieToDbFromRTData(id, title, year, runtime, rating, posterUrl);
+		
+		return true;
+	}
+	
+	/**
+	 * ACTUAL MINING URLs [END]
+	 */
+	
+	
 	@RequestMapping(value = "/updateCheckedSimilarMoviesStatus", method = RequestMethod.POST)
 	public @ResponseBody boolean updateCheckedSimilarMoviesStatus(@RequestParam(required = true) int id, @RequestParam(required = true) int status)
 	{
