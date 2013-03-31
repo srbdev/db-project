@@ -153,7 +153,7 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 };
 
 /**
- * Loops over potention ID's from The Movie Database and if valid and matches a 
+ * Loops over potential ID's from The Movie Database and if valid and matches a 
  * movie from the project database, updates its revenue and budget information.
  */
 MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function()
@@ -192,6 +192,103 @@ MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function()
 		setTimeout(function() {
 			console.log(index);
 			fetchMovieInformation(index);
+		}, time);
+
+		time += 200;
+	});
+};
+
+/**
+ * Loops over potential ID's from The Movie Database and if valid and matches an
+ * actor from the project database, updates its AKA, birthday, deathday, birthplace
+ * and picture URL.
+ */
+MiningHelper.prototype.fetchSingleActorInformationFromTMD = function() 
+{
+	var helper = this;
+	var count = new Array(200000+1).join('0').split('');
+	var time = 200;
+
+	var fetchActorInformation = function(id) {
+		var query = helper.tmdBaseURL + '/person/' + id + '?api_key=' + helper.tmdApiKey;
+
+		$.ajax({
+			type: 'GET',
+			url: query,
+			dataType: 'jsonp',
+			success: function(data) {
+				if (data.name)
+				{
+					var name = data.name;
+					var aka = data.also_known_as.join();
+					var birthday = data.birthday;
+					var deathday = data.deathday;
+					var birthplace = data.birthplace;
+					var pictureURL = data.profile_path;
+
+					$.ajax({
+						type: 'POST',
+						url: '../miner/updateActorInformationFromTMD',
+						data: {name: name, aka: aka, birthday: birthday, deathday: deathday, birthplace: birthplace, pictureURL: pictureURL},
+						success: function(data) {}					
+					});
+				}
+			}
+		});
+	};
+
+
+	$.each(count, function(index, value) {
+		setTimeout(function() {
+			console.log(index);
+			fetchActorInformation(index);
+		}, time);
+
+		time += 200;
+	});
+};
+
+/**
+ * Loops over potential ID's from The Movie Database and if valid and matches a
+ * studio from the project database, updates its headquarter location and
+ * homepage URL.
+ */
+MiningHelper.prototype.fetchSingleStudioInformationFromTMD = function()
+{
+	var helper = this;
+	var count = new Array(200000+1).join('0').split('');
+	var time = 200;
+
+	var fetchStudioInformation = function(id) {
+		var query = helper.tmdBaseURL + '/company/' + id + '?api_key=' + helper.tmdApiKey;
+
+		$.ajax({
+			type: 'GET',
+			url: query,
+			dataType: 'jsonp',
+			success: function(data) {
+				if (data.name)
+				{
+					var name = data.name;
+					var headquarters = data.headquarters;
+					var homepage = data.homepage;
+
+					$.ajax({
+						type: 'POST',
+						url: '../miner/updateStudioInformationFromTMD',
+						data: {name: name, headquarters: headquarters, homepage: homepage},
+						success: function(data) {}					
+					});
+				}
+			}
+		});
+	};
+
+
+	$.each(count, function(index, value) {
+		setTimeout(function() {
+			console.log(index);
+			fetchStudioInformation(index);
 		}, time);
 
 		time += 200;

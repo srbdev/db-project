@@ -122,11 +122,11 @@
 			Mines for movie information.
 		</div>
 		<div class="rtContentSection">
-			<span class="minerButton" onclick="">Get</span>
+			<span class="minerButton" onclick="miner.fetchSingleStudioInformationFromTMD()">Get</span>
 			Mines for studio information.
 		</div>
 		<div class="rtContentSection">
-			<span class="minerButton" onclick="">Get</span>
+			<span class="minerButton" onclick="miner.fetchSingleActorInformationFromTMD()">Get</span>
 			Mines for actor information.
 		</div>
 	</div>
