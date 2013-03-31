@@ -118,8 +118,16 @@
 			POPULATE DB
 		</div>
 		<div class="rtContentSection">
-			<span class="minerButton" onclick="miner.fetchTMDMovieIdsFromDb()">Get</span>
+			<span class="minerButton" onclick="miner.fetchSingleMovieInformationFromTMD()">Get</span>
 			Mines for movie information.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="">Get</span>
+			Mines for studio information.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="">Get</span>
+			Mines for actor information.
 		</div>
 	</div>
 </body>

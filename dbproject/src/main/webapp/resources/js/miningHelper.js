@@ -89,21 +89,6 @@ MiningHelper.prototype.fetchRTMovieIdsFromDb = function()
 	});
 };
 
-MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
-{
-	var helper = this;
-
-	$.ajax({
-		type: 'GET',
-		url: '../miner/fetchMovieIDsForMining',
-		data: {type: false},
-		dataType: 'json', 
-		success: function(data) {
-			helper.fetchMovieInformationProcess(data, 'tmd');
-		}
-	});
-};
-
 MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType) 
 {
 	var helper = this;
@@ -113,8 +98,6 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 		setTimeout(function() {
 			if (dbType === 'rt')
 				helper.fetchSingleMovieInformationFromRT(value.id);
-			else if (dbType === 'tmd')
-				helper.fetchSingleMovieInformationFromTMD(value.id);
 		
 		}, time);
 
@@ -122,18 +105,46 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 	});
 };
 
-MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
+MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function()
 {
 	var helper = this;
-	var query = this.tmdBaseURL + '/movie/' + id + '?api_key=' + this.tmdApiKey;
+	var count = 200001;
+	var time = 500;
 
-	/**
-	 * This section includes the definition for the functions updating the information for the movies
-	 */
-	
-	/**
-	 * [END]
-	 */
+	var fetchMovieInformation = function(id) {
+		var query = this.tmdBaseURL + '/movie/' + id + '?api_key=' + this.tmdApiKey;
+
+		$.ajax({
+			type: 'GET',
+			url: query,
+			dataType: 'jsonp',
+			success: function(data) {
+				if (data.title)
+				{
+					var title = data.title;
+					var budget = data.budget;
+					var revenue = data.revenue;
+
+					$.ajax({
+						type: 'GET',
+						url: '',
+						data: {},
+						success: function(data) {}					
+					});
+				}
+			}
+		});
+	};
+
+
+	for (var i = 0; i < count; i++)
+	{
+		setTimeout(function() {
+			fetchMovieInformation(i);
+		}, time);
+
+		time += 500;
+	}
 }
 
 MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
