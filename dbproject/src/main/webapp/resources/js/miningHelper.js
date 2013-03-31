@@ -152,7 +152,11 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 	});
 };
 
-MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
+/**
+ * Loops over potention ID's from The Movie Database and if valid and matches a 
+ * movie from the project database, updates its revenue and budget information.
+ */
+MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function()
 {
 	var helper = this;
 	var count = new Array(200000+1).join('0').split('');
@@ -386,7 +390,10 @@ MiningHelper.prototype.updateFetchedInfoFlag = function(id, status, dbType)
 	});
 };
 
-
+/**
+ * Fetches the similar movies from the Rotten Tomatoes movie database given a
+ * list of movie IDs.
+ */
 MiningHelper.prototype.fetchSimilarMovies = function()
 {
 	var helper = this;
@@ -411,6 +418,10 @@ MiningHelper.prototype.fetchSimilarMovies = function()
 	});
 };
 
+/**
+ * Fetches 5 similar movies the inputted movie ID.
+ * @param  {[type]} id a movie ID
+ */
 MiningHelper.prototype.fetch5SimilarMoviesFromRottenTomatoes = function(id)
 {
 	var query = this.baseURL + '/movies/' + id + '/similar.json?apikey=' + this.apiKey + '&limit=5';
@@ -423,6 +434,11 @@ MiningHelper.prototype.fetch5SimilarMoviesFromRottenTomatoes = function(id)
 	});
 };
 
+/**
+ * Given a query to the Rotten Tomatoes movie database, inserts the resulting
+ * movie IDs to the project database.
+ * @param  {[type]} query a query to the Rotten Tomatoes movie database
+ */
 MiningHelper.prototype.runInsertMoviesIdsToDbAjax = function(query)
 {
 	$.ajax({
@@ -433,6 +449,10 @@ MiningHelper.prototype.runInsertMoviesIdsToDbAjax = function(query)
 	});
 };
 
+/**
+ * Given a list of movie IDs, inserts them into the project database.
+ * @param  {[type]} data list of movie IDs
+ */
 MiningHelper.prototype.insertMoviesIdsToDb = function(data)
 {
 	var dataObj = JSON.parse(JSON.stringify(data));
@@ -450,6 +470,11 @@ MiningHelper.prototype.insertMoviesIdsToDb = function(data)
 	});
 };
 
+/**
+ * Given a list of movie IDs from The Movie Database, inserts them into the
+ * project database.
+ * @param  {[type]} data list of movie IDs
+ */
 MiningHelper.prototype.insertTmdMoviesIdsToDb = function(data)
 {
 	var stringIds = '';
@@ -471,6 +496,11 @@ MiningHelper.prototype.insertTmdMoviesIdsToDb = function(data)
 	});
 };
 
+/**
+ * Updates the flag whether a movie ID was checked or not already.
+ * @param  {[type]} id     movie ID
+ * @param  {[type]} status 0 or 1
+ */
 MiningHelper.prototype.updateCheckedSimilarMoviesStatus = function(id, status)
 {
 	$.ajax({
@@ -481,12 +511,26 @@ MiningHelper.prototype.updateCheckedSimilarMoviesStatus = function(id, status)
 	});
 };
 
+/**
+ * Given the specific API call and amount from the Rotten Tomatoes movie 
+ * database, fetches the list of movie IDs.
+ * @param  {[type]} listType API call
+ * @param  {[type]} amount   amount of movies to fetch
+ */
 MiningHelper.prototype.fetchMovieList = function(listType, amount)
 {
 	var query = this.baseURL + '/lists' + listType + '.json?apikey=' + this.apiKey + '&limit=' + amount + '&country=us';
 	this.runInsertMoviesIdsToDbAjax(query);	
 };
 
+/**
+ * Given the specifiv API call, the amount of movies to fetch, and the number of
+ * pages to fetch from the Rotten Tomatoes movie database, fetches the list of
+ * movie IDs.
+ * @param  {[type]} listType      API call
+ * @param  {[type]} amountPerPage number of results per page
+ * @param  {[type]} pages         page number
+ */
 MiningHelper.prototype.fetchMovieListWithPages = function(listType, amountPerPage, pages)
 {
 	for (var i = 1; i < pages + 1; i++)
@@ -496,6 +540,10 @@ MiningHelper.prototype.fetchMovieListWithPages = function(listType, amountPerPag
 	}
 };
 
+/**
+ * Performs a call to The Movie Database to fetch movie IDs.
+ * @param  {[type]} url URL to the API call
+ */
 MiningHelper.prototype.fetchTmdMovies = function(url)
 {
 	$.ajax({

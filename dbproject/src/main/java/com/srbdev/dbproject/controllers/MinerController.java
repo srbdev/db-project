@@ -30,6 +30,10 @@ public class MinerController
 		return "miner";
 	}
 	
+	/**
+	 * URL to fetch all the movie IDs.
+	 * @return List of movie IDs
+	 */
 	@RequestMapping(value = "/fetchAllMovieIDs", method = RequestMethod.GET)
 	public @ResponseBody List<Movie> fetchAllMovieIDs()
 	{
@@ -37,6 +41,11 @@ public class MinerController
 		return movieIDs;
 	}
 	
+	/**
+	 * URL to fetch the movie IDs for mining.
+	 * @param type Database type
+	 * @return List of movie IDs
+	 */
 	@RequestMapping(value = "/fetchMovieIDsForMining")
 	public @ResponseBody List<Movie> fetchRTMovieIDsForMining(@RequestParam(required = true) boolean type)
 	{
@@ -44,6 +53,11 @@ public class MinerController
 		return movieIDs;
 	}
 	
+	/**
+	 * URL to insert movie IDs from the Rotten Tomatoes movie database to the database.
+	 * @param data List of movie IDs
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertMovieIdsToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertMovieIdsToDb(@RequestParam(required = true) String data)
 	{
@@ -58,6 +72,11 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to insert movie IDs from The Movie Database to the database.
+	 * @param data List of movie IDs
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertTmdMovieIdsToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertTmdMovieIdsToDb(@RequestParam(required = true) String data)
 	{
@@ -76,7 +95,12 @@ public class MinerController
 	/**
 	 * ACTUAL MINING URLs [START]
 	 */
-	
+	/**
+	 * URL to insert the similar movies information.
+	 * @param id movie ID
+	 * @param data list of similar movie IDs
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertSimilarMoviesInformationToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertSimilarMoviesInformationToDb(@RequestParam(required = true) int id, @RequestParam(required = true) String data)
 	{
@@ -91,6 +115,16 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to insert movie information from the Rotten Tomatoes movie database to the database.
+	 * @param id Movie ID
+	 * @param title Title for the movie
+	 * @param year Year of the movie
+	 * @param runtime Runtime for the movie
+	 * @param rating MPAA rating for the movie
+	 * @param posterUrl Poster URL
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertMovieInformationToDbFromRT", method = RequestMethod.GET)
 	public @ResponseBody boolean insertMovieInformationToDbFromRT(@RequestParam(required = true) int id, @RequestParam(required = true) String title, @RequestParam(required = true) int year, @RequestParam(required = true) int runtime, @RequestParam(required = true) String rating, @RequestParam(required = true) String posterUrl)
 	{
@@ -98,6 +132,12 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to insert director information to the database.
+	 * @param name Name for the director
+	 * @param id ID for the director
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertDirectorInformationToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertDirectorInformationToDb(@RequestParam(required = true) String name, @RequestParam(required = true) int id)
 	{
@@ -109,6 +149,12 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to insert the studio information to the database.
+	 * @param name Name for the studio
+	 * @param id ID for the studio
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertStudioInformationToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertStudioInformationToDb(@RequestParam(required = true) String name, @RequestParam(required = true) int id)
 	{
@@ -120,6 +166,14 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to insert cast information to the database.
+	 * @param movieId ID for the movie
+	 * @param actorId ID for the actor
+	 * @param actorName Name of the actor
+	 * @param characters Characters for the actor
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertCastInformationToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertCastInformationToDb(@RequestParam(required = true) int movieId, @RequestParam(required = true) int actorId, @RequestParam(required = true) String actorName, @RequestParam(required = true) String characters)
 	{
@@ -129,6 +183,12 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to insert the genre information to the database.
+	 * @param movieId Movie ID
+	 * @param type Genre of the movie
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertGenreInformationToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertGenreInformationToDb(@RequestParam(required = true) int movieId, @RequestParam(required = true) String type)
 	{
@@ -138,6 +198,16 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to insert the review information for the movie.
+	 * @param movieId Movie ID
+	 * @param critic Critic's name
+	 * @param date Data of the review
+	 * @param publication Publication for the review
+	 * @param score Score
+	 * @param quote Quote from the review
+	 * @return true
+	 */
 	@RequestMapping(value = "/insertReviewInformationToDb", method = RequestMethod.GET)
 	public @ResponseBody boolean insertReviewInformationToDb(@RequestParam(required = true) int movieId, @RequestParam(required = true) String critic, @RequestParam(required = true) Date date, String publication, String score, String quote)
 	{
@@ -155,6 +225,16 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to update an actor's information with data from The Movie Database.
+	 * @param name Name of the actor
+	 * @param aka AKA for the actor
+	 * @param birthday Birthday of the actor
+	 * @param deathday Deathday of the actor
+	 * @param birthplace Birthplace of the actor
+	 * @param pictureURL Link the his/her picture
+	 * @return true
+	 */
 	@RequestMapping(value = "/updateActorInformationFromTMD", method = RequestMethod.POST)
 	public @ResponseBody boolean updateActorInformationFromTMD(@RequestParam(required = true) String name, String aka, Date birthday, Date deathday, String birthplace, String pictureURL)
 	{
@@ -162,6 +242,13 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to update a studio's information with data from The Movie Database.
+	 * @param name Name of the studio
+	 * @param headquarters Headquarters foe the studio
+	 * @param homepage URL for the studio's homepage
+	 * @return true
+	 */
 	@RequestMapping(value = "/updateStudioInformationFromTMD", method = RequestMethod.POST)
 	public @ResponseBody boolean updateStudioInformationFromTMD(@RequestParam(required = true) String name, String headquarters, String homepage)
 	{
@@ -169,6 +256,13 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to update a movie's information with data from The Movie Databse.
+	 * @param title Movie title
+	 * @param revenue Revenue for the movie
+	 * @param budget Budget for the movie
+	 * @return true
+	 */
 	@RequestMapping(value = "/updateMovieInformationFromTMD", method = RequestMethod.POST)
 	public @ResponseBody boolean updateMovieInformationFromTMD(@RequestParam(required = true) String title, int revenue, int budget)
 	{
@@ -181,6 +275,12 @@ public class MinerController
 	 */
 	
 	
+	/**
+	 * URL to update the flag for checked similar movies.
+	 * @param id Movie ID
+	 * @param status 0 or 1
+	 * @return true
+	 */
 	@RequestMapping(value = "/updateCheckedSimilarMoviesStatus", method = RequestMethod.POST)
 	public @ResponseBody boolean updateCheckedSimilarMoviesStatus(@RequestParam(required = true) int id, @RequestParam(required = true) int status)
 	{
@@ -188,6 +288,13 @@ public class MinerController
 		return true;
 	}
 	
+	/**
+	 * URL to update the flag for fetched information
+	 * @param id Movie ID
+	 * @param status 0 or 1
+	 * @param type Database type
+	 * @return true
+	 */
 	@RequestMapping(value = "/updateFetchedInfoFlag", method = RequestMethod.POST)
 	public @ResponseBody boolean updateFetchedInfoFlag(@RequestParam(required = true) int id, @RequestParam(required = true) int status, @RequestParam(required = true) boolean type)
 	{

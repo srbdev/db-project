@@ -27,7 +27,6 @@ public class MovieDao
 	
 	/**
 	 * Returns a list of movie IDs that have not been checked for similarity yet.
-	 * 
 	 * @return A list of movie IDs
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -50,7 +49,6 @@ public class MovieDao
 	
 	/**
 	 * Returns a list of movie IDs that have not been mined yet for the Rotten Tomatoes database.
-	 * 
 	 * @return A list of movie IDs
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -73,7 +71,6 @@ public class MovieDao
 	
 	/**
 	 * Returns a list of movie IDs that have not been mined yet for The Movie Database.
-	 * 
 	 * @return A list of movie IDs
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -94,6 +91,11 @@ public class MovieDao
 		return (List<Movie>) movies;
 	}
 	
+	/**
+	 * Given a studio name, returns the ID for the studio.
+	 * @param name Name for the movie studio
+	 * @return ID for the studio
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int fetchIdForStudio(String name)
 	{
@@ -107,6 +109,11 @@ public class MovieDao
 		}).get(0);
 	}
 	
+	/**
+	 * Given the name of a director, returns the ID for the director.
+	 * @param name Name for the director
+	 * @return ID for the director
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int fetchIdForDirector(String name)
 	{
@@ -120,6 +127,11 @@ public class MovieDao
 		}).get(0);
 	}
 	
+	/**
+	 * Given the critic name, returns the ID for the critic.
+	 * @param critic Name for the critic
+	 * @return ID for the critic
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int fetchIdForReviewer(String critic)
 	{
@@ -133,6 +145,12 @@ public class MovieDao
 		}).get(0);
 	}
 	
+	/**
+	 * Given a reviewer ID and the review date, returns the ID for the review.
+	 * @param reviewerId ID for the reviewer
+	 * @param reviewDate Date of the review
+	 * @return ID for the review
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int fetchIdForReview(int reviewerId, Date reviewDate)
 	{
@@ -147,6 +165,12 @@ public class MovieDao
 	}
 	
 	
+	/**
+	 * Given a flag for either the Rotten Tomatoes movie database or The Movie Database,
+	 * inserts the movie ID to the database.
+	 * @param id ID for the movie
+	 * @param flag Database flag
+	 */
 	public void insertMovieIDToDb(int id, boolean flag)
 	{
 		String sql;
@@ -168,6 +192,15 @@ public class MovieDao
 	}
 	
 	
+	/**
+	 * Inserts a movie information from the Rotten Tomatoes movie database.
+	 * @param id ID for the movie
+	 * @param title Title of the movie
+	 * @param year Year of the movie
+	 * @param runtime Runtim of the movie
+	 * @param rating MPAA rating for the movie
+	 * @param posterUrl URL to the poster.
+	 */
 	public void insertMovieToDbFromRTData(int id, String title, int year, int runtime, String rating, String posterUrl)
 	{
 		String sql = "INSERT INTO Movies (id, title, year, runtime, rating, poster_url) VALUES (?,?,?,?,?,?)";
@@ -182,6 +215,11 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts movie IDs to isSimilar table.
+	 * @param id1 movie ID
+	 * @param id2 movie ID
+	 */
 	public void insertSimilarMovieInformationToDb(int id1, int id2)
 	{
 		String sql = "INSERT INTO isSimilar (movie1Id, movie2Id) VALUES (?,?)";
@@ -196,6 +234,10 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts the director information to the database.
+	 * @param name Name of the director
+	 */
 	public void insertDirectorInformationToDb(String name)
 	{
 		String sql = "INSERT INTO Director (name) VALUES (?)";
@@ -210,6 +252,10 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts the Studio information to the database.
+	 * @param name Name of the studio
+	 */
 	public void insertStudioInformationToDb(String name)
 	{
 		String sql = "INSERT INTO Studios (name) VALUES (?)";
@@ -224,6 +270,11 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts the actor information to the database.
+	 * @param id ID of the actor
+	 * @param name Name of the actor
+	 */
 	public void insertActorInformationToDb(int id, String name)
 	{
 		String sql = "INSERT INTO Actors (id, name) VALUES (?,?)";
@@ -238,6 +289,12 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts the cast information to the database for a given movie and a given actor.
+	 * @param movieId ID for the movie
+	 * @param actorId ID for the actor
+	 * @param characters List of character(s) for actor
+	 */
 	public void insertCastInformationToDb(int movieId, int actorId, String characters)
 	{
 		String sql = "INSERT INTO casts (movieId, actorId, characters) VALUES (?,?,?)";
@@ -252,6 +309,10 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts the genre information to the Genre table.
+	 * @param type Genre
+	 */
 	public void insertGenreToDb(String type)
 	{
 		String sql = "INSERT INTO Genres (type) VALUES (?)";
@@ -266,6 +327,11 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts the genre information for a movie.
+	 * @param movieId ID for the movie
+	 * @param type Genre for the movie
+	 */
 	public void insertIsOfGenreInformationToDb(int movieId, String type)
 	{
 		String sql = "INSERT INTO isOfGenre (movieId, type) VALUES (?,?)";
@@ -280,6 +346,10 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts the reviewer information to the database.
+	 * @param critic Name of the critic
+	 */
 	public void insertReviewerInformationToDb(String critic)
 	{
 		String sql = "INSERT INTO Reviewers (critic) VALUES (?)";
@@ -294,6 +364,14 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts the review information to the database.
+	 * @param reviewerId ID for the reviewer
+	 * @param reviewDate Date of the review
+	 * @param publication Publication
+	 * @param score Score for the movie
+	 * @param quote Quote from the review
+	 */
 	public void insertReviewInformationToDb(int reviewerId, Date reviewDate, String publication, String score, String quote)
 	{
 		String sql = "INSERT INTO Reviews (reviewerId, reviewDate, publication, score, quote) VALUES (?,?,?,?,?)";
@@ -308,6 +386,11 @@ public class MovieDao
 		}
 	}
 	
+	/**
+	 * Inserts review and reviewer information to reviewedBy table.
+	 * @param movieId Movie ID
+	 * @param reviewId Review ID
+	 */
 	public void insertReviewedByInformationToDb(int movieId, int reviewId)
 	{
 		String sql = "INSERT INTO reviewedBy (movieId, reviewId) VALUES (?,?)";
@@ -323,42 +406,85 @@ public class MovieDao
 	}
 	
 	
+	/**
+	 * Updates the status of the flag for similar movies checked for a given movie.
+	 * @param id Movie ID
+	 * @param status 0 or 1
+	 */
 	public void updateCheckedSimilarMoviesStatus(int id, int status)
 	{
 		String sql = "UPDATE movieIDsToFetch SET checkedSimilarMovies = ? WHERE id = ?";
 		jdbcTemplate.update(sql, new Object[] {status, id});
 	}
 	
+	/**
+	 * Updates the fetched information flag for a given movie for the Rotten Tomatoes movie database.
+	 * @param id Movie ID
+	 * @param status 0 or 1
+	 */
 	public void updateFetchInformationStatusForRT(int id, int status)
 	{
 		String sql = "UPDATE movieIDsToFetch SET fetchedInfo = ? WHERE id = ?";
 		jdbcTemplate.update(sql, new Object[] {status, id});
 	}
 	
+	/**
+	 * Updates the fetched information flag for a given movie for The Movie Database.
+	 * @param id Movie ID
+	 * @param status 0 or 1
+	 */
 	public void updateFetchInformationStatusForTMD(int id, int status)
 	{
 		String sql = "UPDATE tmdMovieIDsToFetch SET fetchedInfo = ? WHERE id = ?";
 		jdbcTemplate.update(sql, new Object[] {status, id});
 	}
 	
+	/**
+	 * Given a movie, updates the director ID for the Movies table.
+	 * @param movieId Movie ID
+	 * @param directorId ID for the director
+	 */
 	public void updateMovieWithDirectorId(int movieId, int directorId)
 	{
 		String sql = "UPDATE Movies SET directorId = ? WHERE id = ?";
 		jdbcTemplate.update(sql, new Object[] {directorId, movieId});
 	}
 	
+	/**
+	 * Given a movie, updates the studio ID for the Movies table.
+	 * @param movieId Movie ID
+	 * @param studioId ID for the studio
+	 */
 	public void updateMovieWithStudioId(int movieId, int studioId)
 	{
 		String sql = "UPDATE Movies SET studioId = ? WHERE id = ?";
 		jdbcTemplate.update(sql, new Object[] {studioId, movieId});
 	}
 	
+	/**
+	 * Updates the actor information from The Movie Database to complement the already collected
+	 * information from the Rotten Tomatoes movie database.
+	 * @param name Name of the actor
+	 * @param aka AKA for the actor
+	 * @param birthday Birthday of the actor
+	 * @param deathday Deathday for the actor
+	 * @param birthplace Birth place for the actor
+	 * @param pictureURL URL for the actor's picture
+	 */
 	public void updateActorInformationFromTMD(String name, String aka, Date birthday, Date deathday, String birthplace, String pictureURL)
 	{
 		String sql = "UPDATE Actors SET aka = ?, birthday = ?, deathday = ?, birthplace = ?, pictureURL = ? WHERE name = ?";
 		jdbcTemplate.update(sql, new Object[] {aka, birthday, deathday, birthplace, pictureURL, name});
+		System.out.println("INFO : Updated actor " + name + " with aka=" + aka + ", birthday=" + birthday + ", deathday=" + deathday + ", birthplace=" + birthplace + ", pictureURL=" + pictureURL);
 	}
 	
+	/**
+	 * Updates the movie information from The Movie Database to complement the already collected
+	 * information from the Rotten Tomatoes movie database.
+	 * @param title Title of the movie
+	 * @param revenue Revenue for the movie
+	 * @param budget Budget for the movie
+	 */
 	public void updateMovieInformationFromTMD(String title, int revenue, int budget)
 	{
 		String sql = "UPDATE Movies SET revenue = ?, budget = ? WHERE title = ?";
@@ -366,9 +492,17 @@ public class MovieDao
 		System.out.println("INFO : Updated movie " + title + " with revenue=" + revenue + " and budget=" + budget);
 	}
 	
+	/**
+	 * Updates the studio information from The Movie Database to complement the already collected
+	 * information from the Rotten Tomatoes movie database.
+	 * @param name Name of the studio
+	 * @param headquarters Location for the headquarters
+	 * @param homepage homepage URL
+	 */
 	public void updateStudioInformationFromTMD(String name, String headquarters, String homepage)
 	{
 		String sql = "UPDATE Studios SET headquarters = ?, homepage = ? WHERE name = ?";
 		jdbcTemplate.update(sql, new Object[] {headquarters, homepage, name});
+		System.out.println("INFO : Updated studio " + name + " with headquarters=" + headquarters + ", homepage=" + homepage);
 	}
 }
