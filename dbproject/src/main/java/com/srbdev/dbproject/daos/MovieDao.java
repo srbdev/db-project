@@ -352,4 +352,22 @@ public class MovieDao
 		String sql = "UPDATE Movies SET studioId = ? WHERE id = ?";
 		jdbcTemplate.update(sql, new Object[] {studioId, movieId});
 	}
+	
+	public void updateActorInformationFromTMD(String name, String aka, Date birthday, Date deathday, String birthplace, String pictureURL)
+	{
+		String sql = "UPDATE Actors SET aka = ?, birthday = ?, deathday = ?, birthplace = ?, pictureURL = ? WHERE name = ?";
+		jdbcTemplate.update(sql, new Object[] {aka, birthday, deathday, birthplace, pictureURL, name});
+	}
+	
+	public void updateMovieInformationFromTMD(String title, int revenue, int budget)
+	{
+		String sql = "UPDATE Movies SET revenue = ?, budget = ? WHERE title = ?";
+		jdbcTemplate.update(sql, new Object[] {revenue, budget, title});
+	}
+	
+	public void updateStudioInformationFromTMD(String name, String headquarters, String homepage)
+	{
+		String sql = "UPDATE Studios SET headquarters = ?, homepage = ? WHERE name = ?";
+		jdbcTemplate.update(sql, new Object[] {headquarters, homepage, name});
+	}
 }
