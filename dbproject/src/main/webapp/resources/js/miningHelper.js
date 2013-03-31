@@ -155,11 +155,11 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
 {
 	var helper = this;
-	var count = 200001;
-	var time = 125;
+	var count = new Array(200000+1).join('0').split('');
+	var time = 200;
 
 	var fetchMovieInformation = function(id) {
-		var query = this.tmdBaseURL + '/movie/' + id + '?api_key=' + this.tmdApiKey;
+		var query = helper.tmdBaseURL + '/movie/' + id + '?api_key=' + helper.tmdApiKey;
 
 		$.ajax({
 			type: 'GET',
@@ -173,7 +173,7 @@ MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
 					var revenue = data.revenue;
 
 					$.ajax({
-						type: 'GET',
+						type: 'POST',
 						url: '../miner/updateMovieInformationFromTMD',
 						data: {title: title, revenue: revenue, budget: budget},
 						success: function(data) {}					
@@ -184,15 +184,15 @@ MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
 	};
 
 
-	for (var i = 0; i < count; i++)
-	{
+	$.each(count, function(index, value) {
 		setTimeout(function() {
-			fetchMovieInformation(i);
+			console.log(index);
+			fetchMovieInformation(index);
 		}, time);
 
-		time += 125;
-	}
-}
+		time += 200;
+	});
+};
 
 /**
  * This function handles populating the db for the project from the information
