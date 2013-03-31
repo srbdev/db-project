@@ -156,7 +156,7 @@ MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
 {
 	var helper = this;
 	var count = 200001;
-	var time = 500;
+	var time = 125;
 
 	var fetchMovieInformation = function(id) {
 		var query = this.tmdBaseURL + '/movie/' + id + '?api_key=' + this.tmdApiKey;
@@ -174,8 +174,8 @@ MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
 
 					$.ajax({
 						type: 'GET',
-						url: '',
-						data: {},
+						url: '../miner/updateMovieInformationFromTMD',
+						data: {title: title, revenue: revenue, budget: budget},
 						success: function(data) {}					
 					});
 				}
@@ -190,7 +190,7 @@ MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function(id)
 			fetchMovieInformation(i);
 		}, time);
 
-		time += 500;
+		time += 125;
 	}
 }
 

@@ -363,6 +363,7 @@ public class MovieDao
 	{
 		String sql = "UPDATE Movies SET revenue = ?, budget = ? WHERE title = ?";
 		jdbcTemplate.update(sql, new Object[] {revenue, budget, title});
+		System.out.println("INFO : Updated movie " + title + " with revenue=" + revenue + " and budget=" + budget);
 	}
 	
 	public void updateStudioInformationFromTMD(String name, String headquarters, String homepage)
