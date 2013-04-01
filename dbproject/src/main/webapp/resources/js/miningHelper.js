@@ -217,14 +217,15 @@ MiningHelper.prototype.fetchSingleActorInformationFromTMD = function()
 			url: query,
 			dataType: 'jsonp',
 			success: function(data) {
+				
 				if (data.name)
 				{
 					var name = data.name;
-					var aka = data.also_known_as.join();
+					var aka = data.also_known_as.join() ? data.also_known_as.join() : 'NULL';
 					var birthday = data.birthday;
-					var deathday = data.deathday;
-					var birthplace = data.birthplace;
-					var pictureURL = data.profile_path;
+					var deathday = (data.deathday === null || data.deathday.length === 0) ? '9999-01-01' : data.deathday;
+					var birthplace = data.place_of_birth ? data.place_of_birth : 'NULL';
+					var pictureURL = data.profile_path ? data.profile_path : 'NULL';
 
 					$.ajax({
 						type: 'POST',
