@@ -1,12 +1,11 @@
 package com.srbdev.dbproject.model;
 
-import java.sql.Date;
 
 public class Movie 
 {
 	private int id;
 	private String title;
-	private Date year;
+	private int year;
 	private int runtime;
 	private String rating;
 	private int revenue;
@@ -14,6 +13,8 @@ public class Movie
 	private String poster_url;
 	private int directorId;
 	private int studioId;
+	private String score;
+	private int numberOfReviews;
 
 	public int getId() {
 		return id;
@@ -31,11 +32,11 @@ public class Movie
 		this.title = title;
 	}
 
-	public Date getYear() {
+	public int getYear() {
 		return year;
 	}
 
-	public void setYear(Date year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 
@@ -93,5 +94,21 @@ public class Movie
 
 	public void setStudioId(int studioId) {
 		this.studioId = studioId;
+	}
+
+	public String getScore() {
+		return score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
+	}
+
+	public int getNumberOfReviews() {
+		return numberOfReviews;
+	}
+
+	public void setNumberOfReviews(int numberOfReviews) {
+		this.numberOfReviews = numberOfReviews;
 	}
 }

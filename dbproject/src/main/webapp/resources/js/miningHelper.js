@@ -564,7 +564,9 @@ MiningHelper.prototype.insertMoviesIdsToDb = function(data)
 		type: 'GET',
 		url: '../miner/insertMovieIdsToDb',
 		data: {data: stringIds},
-		success: function(data) {}
+		success: function(data) {
+			alert('ID(s) added successfuly to the database.');
+		}
 	});
 };
 
@@ -590,7 +592,9 @@ MiningHelper.prototype.insertTmdMoviesIdsToDb = function(data)
 		type: 'GET',
 		url: '../miner/insertTmdMovieIdsToDb',
 		data: {data: stringIds},
-		success: function(data) {}
+		success: function(data) {
+			alert('ID(s) added successfuly to the database.');
+		}
 	});
 };
 

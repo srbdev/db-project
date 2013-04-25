@@ -2,6 +2,7 @@
 
 <head>
 	<script type="text/javascript" src="resources/js/jquery-1.9.0.js"></script>
+	<script type="text/javascript" src="../resources/js/infoHelper.js"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="resources/css/dbproject.css">
@@ -10,6 +11,14 @@
 </head>
 
 <body>
+	<script type="text/javascript">
+		var helper;
+
+		$(document).ready(function() {
+			helper = new InfoHelper();
+		});
+	</script>
+
 	<header></header>
 	<div class="subheader">
 		<div class="subheaderLinks">
@@ -18,18 +27,6 @@
 		</div>
 	</div>
 
-	<div class="rtMainContent rtMainContentWithTitle">
-		<div class="sectionTitle" id="stWelcome">
-			WELCOME
-		</div>
-		
-		<div class="rtContentSection">
-			db-project home
-			
-			<p>This is the home page for db-project.</p>
-			
-			<a href="miner/home">Link</a> to the miner's page.
-		</div>
-	</div>
+	
 </body>
 </html>

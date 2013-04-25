@@ -13,6 +13,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import com.srbdev.dbproject.model.Actor;
+import com.srbdev.dbproject.model.Infometric;
 import com.srbdev.dbproject.model.Movie;
 
 public class MovieDao 
@@ -24,6 +26,312 @@ public class MovieDao
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
+	
+	/**
+	 * THIS SECTION OF THE MOVIE DAO CONTAINS QUERIES PERFORMED BY THE
+	 * REGULAR USER OF THE APPLICATION FROM THE "INFORMATION" SECTION.
+	 */
+	
+	/**
+	 * Returns a list of the top 5 movies sorted by revenue from the input
+	 * year and input MPAA rating. 
+	 * @param year Movie year
+	 * @param rating MPAA rating
+	 * @return A list of movies
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Movie> fetchTop5RevenueMoviesForYearAndRating(int year, String rating)
+	{
+		String sql = "SELECT * FROM Movies WHERE year = ? AND rating = ? ORDER BY revenue DESC LIMIT 0,5";
+		
+		Collection movies = jdbcTemplate.query(sql, new Object[] {year, rating}, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Movie movie = new Movie();
+				movie.setTitle(rs.getString("title"));
+				movie.setYear(rs.getInt("year"));
+				movie.setRating(rs.getString("rating"));
+				movie.setRevenue(rs.getInt("revenue"));
+				movie.setBudget(rs.getInt("budget"));
+				movie.setPoster_url(rs.getString("poster_url"));
+				
+				return movie;
+			}
+		});
+		
+		return (List<Movie>) movies;
+	}
+	
+	/**
+	 * Returns the statistics for each year with the sum, average, minimum and 
+	 * maximum revenues for the movies. 
+	 * @return List of information/data
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Infometric> fetchStatisticsForMoviesPerYear()
+	{
+		String sql = "SELECT year, SUM(revenue) AS sum, AVG(revenue) AS average, MIN(revenue) AS minimum, MAX(revenue) AS maximum " +
+					 "FROM Movies " +
+					 "WHERE revenue > 1000 " +
+					 "GROUP BY year " +
+					 "ORDER BY year DESC " +
+					 "LIMIT 0,10";
+		
+		Collection data = jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Infometric info = new Infometric();
+				info.setYear(rs.getInt("year"));
+				info.setSum(rs.getInt("sum"));
+				info.setAverage(rs.getInt("average"));
+				info.setMinimum(rs.getInt("minimum"));
+				info.setMaximum(rs.getInt("maximum"));
+				
+				return info;
+			}
+		});
+		
+		return (List<Infometric>) data;
+	}
+	
+	/**
+	 * Returns a list of actors which where born from the place from the input
+	 * parameter.
+	 * @param birthplace Birthplace name
+	 * @return List of actors
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Actor> fetchActorsAliveFrom(String birthplace)
+	{
+		String sql = "SELECT name, birthday, birthplace, pictureURL FROM Actors WHERE deathday IS NULL AND birthplace LIKE ? LIMIT 0,5";
+		String input = "%" + birthplace + "%";
+		
+		Collection actors = jdbcTemplate.query(sql, new Object[] {input}, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Actor actor = new Actor();
+				actor.setName(rs.getString("name"));
+				actor.setBirthday(rs.getDate("birthday"));
+				actor.setBirthplace(rs.getString("birthplace"));
+				actor.setPictureURL(rs.getString("pictureURL"));
+				
+				return actor;
+			}
+		});
+		
+		return (List<Actor>) actors;
+	}
+	
+	/**
+	 * Returns a list of movies which titles match the name from the input 
+	 * parameter.
+	 * @param name Movie name
+	 * @return List of movies
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Movie> searchMovie(String name)
+	{
+		String sql = "SELECT * FROM Movies WHERE title LIKE ? LIMIT 0,5";
+		String input = "%" + name + "%";
+		
+		Collection movies = jdbcTemplate.query(sql, new Object[] {input}, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Movie movie = new Movie();
+				movie.setTitle(rs.getString("title"));
+				movie.setYear(rs.getInt("year"));
+				movie.setRating(rs.getString("rating"));
+				movie.setRevenue(rs.getInt("revenue"));
+				movie.setBudget(rs.getInt("budget"));
+				movie.setPoster_url(rs.getString("poster_url"));
+				
+				return movie;
+			}
+		});
+		
+		return (List<Movie>) movies;
+	}
+	
+	/**
+	 * Returns a list of actors which names match the name from the input
+	 * parameter.
+	 * @param name Actor name
+	 * @return List actors
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Actor> searchActor(String name)
+	{
+		String sql = "SELECT * FROM Actors WHERE name LIKE ? LIMIT 0,5";
+		String input = "%" + name + "%";
+		
+		Collection actors = jdbcTemplate.query(sql, new Object[] {input}, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Actor actor = new Actor();
+				actor.setName(rs.getString("name"));
+				actor.setBirthday(rs.getDate("birthday"));
+				actor.setDeathday(rs.getDate("deathday"));
+				actor.setBirthplace(rs.getString("birthplace"));
+				
+				return actor;
+			}
+		});
+		
+		return (List<Actor>) actors;
+	}
+	
+	/**
+	 * Returns the top 5 worst movies.
+	 * @return List of movies
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Movie> fetchTop5WorstMovies()
+	{
+		String sql = "SELECT DISTINCT title, Reviews.score, poster_url, year " +
+					 "FROM Movies " +
+					 "INNER JOIN reviewedBy ON Movies.id = reviewedBy.movieId " +
+					 "INNER JOIN Reviews ON reviewedBy.reviewId = Reviews.id " +
+					 "WHERE Reviews.score = '1/5' " +
+					 "LIMIT 0,5";
+		
+		Collection movies = jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Movie movie = new Movie();
+				movie.setTitle(rs.getString("title"));
+				movie.setYear(rs.getInt("year"));
+				movie.setRating(rs.getString("score"));
+				movie.setPoster_url(rs.getString("poster_url"));
+				
+				return movie;
+			}
+		});
+		
+		return (List<Movie>) movies;
+	}
+	
+	/**
+	 * Returns the top 5 best movies.
+	 * @return List of movies
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Movie> fetchTop5BestMovies()
+	{
+		String sql = "SELECT DISTINCT title, Reviews.score, poster_url, year " +
+					 "FROM Movies " +
+					 "INNER JOIN reviewedBy ON Movies.id = reviewedBy.movieId " +
+					 "INNER JOIN Reviews ON reviewedBy.reviewId = Reviews.id " +
+					 "WHERE Reviews.score = '5/5' " +
+					 "LIMIT 0,5";
+	
+		Collection movies = jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Movie movie = new Movie();
+				movie.setTitle(rs.getString("title"));
+				movie.setYear(rs.getInt("year"));
+				movie.setRating(rs.getString("score"));
+				movie.setPoster_url(rs.getString("poster_url"));
+				
+				return movie;
+			}
+		});
+		
+		return (List<Movie>) movies;
+	}
+	
+	/**
+	 * Returns the list of actors that starred in the movies with largerst
+	 * revenues.
+	 * @return List of information/data
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Infometric> fetchActorsInMoviesWithLargeRevenue()
+	{
+		String sql = "SELECT name, pictureURL, Movies.title, Movies.year, Movies.revenue, Movies.poster_url " +
+					 "FROM Actors INNER JOIN casts ON Actors.id = casts.actorId " +
+					 "INNER JOIN Movies ON casts.movieId = Movies.id " +
+					 "WHERE Movies.revenue > 100000000 " +
+					 "ORDER BY revenue " +
+					 "DESC LIMIT 0, 5";
+	
+		Collection data = jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Infometric info = new Infometric();
+				info.setName(rs.getString("name"));
+				info.setPictureURL(rs.getString("pictureURL"));
+				info.setTitle(rs.getString("title"));
+				info.setYear(rs.getInt("year"));
+				info.setRevenue(rs.getInt("revenue"));
+				info.setPoster_url(rs.getString("poster_url"));
+				
+				return info;
+			}
+		});
+		
+		return (List<Infometric>) data;
+	}
+	
+	/**
+	 * Returns a list of movies with the most reviews. 
+	 * @return List of movies
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Movie> fetchTop5MostReviewedMovies()
+	{
+		String sql = "SELECT title, year, poster_url, COUNT(Reviews.id) as numberOfReviews " +
+					 "FROM Movies " +
+					 "INNER JOIN reviewedBy ON Movies.id = reviewedBy.movieId " +
+					 "INNER JOIN Reviews ON reviewedBy.reviewId = Reviews.id " +
+					 "GROUP BY Title " +
+					 "ORDER BY numberOfReviews " +
+					 "DESC LIMIT 0,5";
+
+		Collection movies = jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Movie movie = new Movie();
+				movie.setTitle(rs.getString("title"));
+				movie.setYear(rs.getInt("year"));
+				movie.setPoster_url(rs.getString("poster_url"));
+				movie.setNumberOfReviews(rs.getInt("numberOfReviews"));
+				
+				return movie;
+			}
+		});
+		
+		return (List<Movie>) movies;
+	}
+	
+	
+	/**
+	 * THIS SECTION OF THE MOVIE DAO CONTAINS QUERIES USED BY THE MINER SECTION
+	 * OF THE WEB APPLICATION.
+	 */
+	
+	/**
+	 * Sets the deathday to NULL for actors that are still alive since had to 
+	 * include a dummy date when mining because inserts statements did not 
+	 * accept NULL for dates. 
+	 */
+	public void cleanUpDeathdayForAliveActors()
+	{
+		String sql = "UPDATE Actors SET deathday = NULL WHERE deathday = '9999-01-01'";
+		jdbcTemplate.update(sql);
+		System.out.println("INFO: Cleaned up deathday for alive actors.");
+	}
+	
+	/**
+	 * Deletes entries for the actors that do not have a link to their profile
+	 * picture available.
+	 */
+	public void removeActorsWithoutPictures()
+	{
+		String sql = "DELETE FROM Actors WHERE pictureURL IS NULL";
+		jdbcTemplate.update(sql);
+		System.out.println("INFO: Deleted actor entries without profile pictures.");
+	}
 	
 	/**
 	 * Returns a list of movie IDs that have not been checked for similarity yet.
