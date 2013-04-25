@@ -27,6 +27,24 @@
 		</div>
 	</div>
 
-	
+	<div class="rtMainContent rtMainContentWithTitle">
+	    <div class="sectionTitle" id="stWelcome">
+	      WELCOME
+	    </div>
+    
+	    <div class="rtContentSection">
+	      This is the 564 Introduction to Database Management project homepage. If you are starting fresh with an empty database, head over to the <a href="miner/home">miner's</a> page to populate the database. 
+	    </div>
+  	</div>
+  	
+  	<div class="rtMainContent rtMainContentWithTitle">
+	    <div class="sectionTitle" id="stWelcome">
+	   		INFO 	
+	    </div>
+    
+	    <div class="rtContentSection">
+	    	You can use this section to learn more information about the movies and actors stored in the database.
+	    </div>
+  	</div>
 </body>
 </html>
