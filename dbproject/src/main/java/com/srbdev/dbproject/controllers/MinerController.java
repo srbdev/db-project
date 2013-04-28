@@ -305,4 +305,26 @@ public class MinerController
 		
 		return true;
 	}
+	
+	/**
+	 * URL to remove the actors that do not have pictures.
+	 * @return true
+	 */
+	@RequestMapping(value = "/removeActorsWithoutPictures", method = RequestMethod.POST)
+	public @ResponseBody boolean removeActorsWithoutPictures()
+	{
+		movieDao.removeActorsWithoutPictures();
+		return true;
+	}
+	
+	/**
+	 * URL to replace the deathday of alive actors from "9999-01-01" to NULL.
+	 * @return true
+	 */
+	@RequestMapping(value = "/cleanUpDeathDayForAliveActors", method = RequestMethod.POST)
+	public @ResponseBody boolean cleanUpDeathdayForAliveActors()
+	{
+		movieDao.cleanUpDeathdayForAliveActors();
+		return true;
+	}
 }

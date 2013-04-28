@@ -130,6 +130,25 @@
 			Mines for actor information.
 		</div>
 	</div>
+	
+	<div class="rtMainContent sectionHeader">
+			<h3>Database Maintenance</h3>
+	</div>
+	
+	<div class="rtMainContent rtMainContentWithTitle">
+		<div class="sectionTitle" id="stPopulateDb">
+			ACTORS
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.removeActorsWithoutPictures()">Get</span>
+			Remove actors without link to picture ID.
+		</div>
+		<div class="rtContentSection">
+			<span class="minerButton" onclick="miner.cleanUpDeathdayForAliveActors()">Get</span>
+			Refactor deathday for alive actors.
+		</div>
+	</div>
+	
 </body>
 
 </html>

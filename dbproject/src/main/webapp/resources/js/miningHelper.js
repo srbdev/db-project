@@ -654,3 +654,31 @@ MiningHelper.prototype.fetchTmdMovies = function(url)
 		success: this.insertTmdMoviesIdsToDb
 	});
 };
+
+/**
+ * Removes the actors that do not have pictures.
+ */
+MiningHelper.prototype.removeActorsWithoutPictures = function()
+{
+	$.ajax({
+		type: 'POST',
+		url: '../miner/removeActorsWithoutPictures',
+		success: function(data) {
+			alert('Actors removed successfully.');
+		}
+	});
+};
+
+/**
+ * Refactors the deathday of the alive actors.
+ */
+MiningHelper.prototype.cleanUpDeathdayForAliveActors = function()
+{
+	$.ajax({
+		type: 'POST',
+		url: '../miner/cleanUpDeathDayForAliveActors',
+		success: function(data) {
+			alert('Actors\' deathday updated successfully.');
+		}
+	});
+};
