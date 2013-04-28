@@ -104,6 +104,11 @@ header
 	width: 90px;
 }
 
+#stActorTable
+{
+	width: 100px;
+}
+
 .rtContentSection
 {
 	width: 100%;
@@ -147,4 +152,22 @@ header
 {
 	border-left: 3px solid #F8991D;
 	cursor: pointer;
+}
+
+.rtTextInput
+{
+	padding: 3px;
+	margin-left: 10px;
+	color: #545454;
+}
+
+.rtResultSubSection
+{
+	width: 100%;
+	margin: 10px 0px 5px 0px;	
+}
+
+.rtResultSubSection p
+{
+	margin-left: 15px;
 }

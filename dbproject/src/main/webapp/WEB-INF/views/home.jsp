@@ -2,7 +2,7 @@
 
 <head>
 	<script type="text/javascript" src="resources/js/jquery-1.9.0.js"></script>
-	<script type="text/javascript" src="../resources/js/infoHelper.js"></script>
+	<script type="text/javascript" src="resources/js/infoHelper.js"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="resources/css/dbproject.css">
@@ -44,6 +44,14 @@
     
 	    <div class="rtContentSection">
 	    	You can use this section to learn more information about the movies and actors stored in the database.
+	    	
+	    	<p>1. Search for movies: 
+	    	<input id="rtSearchMoviesInput" class="rtTextInput" type="text" placeholder="i.e. Star Wars"></input> 
+	    	<span class="minerButton" onclick="helper.searchMovies()">Search</span></p>
+	    	
+	    	<p>2. Search for actors: 
+	    	<input id="rtSearchActorsInput" class="rtTextInput" type="text" placeholder="i.e. Natalie Portman"></input> 
+	    	<span class="minerButton" onclick="helper.searchActors()">Search</span></p>
 	    </div>
   	</div>
 </body>

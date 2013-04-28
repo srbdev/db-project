@@ -90,7 +90,7 @@ MiningHelper.prototype.fetchTmdTopRatedMovies = function()
  */
 MiningHelper.prototype.fetchRTMovieIdsFromDb = function()
 {
-	var helper = this;
+	var objectHandle = this;
 
 	$.ajax({
 		type: 'GET',
@@ -100,7 +100,7 @@ MiningHelper.prototype.fetchRTMovieIdsFromDb = function()
 		success: function(data) {
 			// This is function is called if the list of movie IDs returns 
 			// successfully from the db
-			helper.fetchMovieInformationProcess(data, 'rt');
+			objectHandle.fetchMovieInformationProcess(data, 'rt');
 		}
 	});
 };
@@ -110,7 +110,7 @@ MiningHelper.prototype.fetchRTMovieIdsFromDb = function()
  */
 MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
 {
-	var helper = this;
+	var objectHandle = this;
 
 	$.ajax({
 		type: 'GET',
@@ -120,7 +120,7 @@ MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
 		success: function(data) {
 			// This is function is called if the list of movie IDs returns 
 			// successfully from the db
-			helper.fetchMovieInformationProcess(data, 'tmd');
+			objectHandle.fetchMovieInformationProcess(data, 'tmd');
 		}
 	});
 };
@@ -134,7 +134,7 @@ MiningHelper.prototype.fetchTMDMovieIdsFromDb = function()
  */
 MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType) 
 {
-	var helper = this;
+	var objectHandle = this;
 	var time = 500;
 
 	// Loops over each single ID from the inputted list
@@ -144,7 +144,7 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
 		// open APIs
 		setTimeout(function() {
 			if (dbType === 'rt')
-				helper.fetchSingleMovieInformationFromRT(value.id);
+				objectHandle.fetchSingleMovieInformationFromRT(value.id);
 		
 		}, time);
 
@@ -158,12 +158,12 @@ MiningHelper.prototype.fetchMovieInformationProcess = function(data, dbType)
  */
 MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function()
 {
-	var helper = this;
+	var objectHandle = this;
 	var count = new Array(200000+1).join('0').split('');
 	var time = 200;
 
 	var fetchMovieInformation = function(id) {
-		var query = helper.tmdBaseURL + '/movie/' + id + '?api_key=' + helper.tmdApiKey;
+		var query = objectHandle.tmdBaseURL + '/movie/' + id + '?api_key=' + objectHandle.tmdApiKey;
 
 		$.ajax({
 			type: 'GET',
@@ -205,12 +205,12 @@ MiningHelper.prototype.fetchSingleMovieInformationFromTMD = function()
  */
 MiningHelper.prototype.fetchSingleActorInformationFromTMD = function() 
 {
-	var helper = this;
+	var objectHandle = this;
 	var count = new Array(200000+1).join('0').split('');
 	var time = 200;
 
 	var fetchActorInformation = function(id) {
-		var query = helper.tmdBaseURL + '/person/' + id + '?api_key=' + helper.tmdApiKey;
+		var query = objectHandle.tmdBaseURL + '/person/' + id + '?api_key=' + objectHandle.tmdApiKey;
 
 		$.ajax({
 			type: 'GET',
@@ -256,12 +256,12 @@ MiningHelper.prototype.fetchSingleActorInformationFromTMD = function()
  */
 MiningHelper.prototype.fetchSingleStudioInformationFromTMD = function()
 {
-	var helper = this;
+	var objectHandle = this;
 	var count = new Array(200000+1).join('0').split('');
 	var time = 200;
 
 	var fetchStudioInformation = function(id) {
-		var query = helper.tmdBaseURL + '/company/' + id + '?api_key=' + helper.tmdApiKey;
+		var query = objectHandle.tmdBaseURL + '/company/' + id + '?api_key=' + objectHandle.tmdApiKey;
 
 		$.ajax({
 			type: 'GET',
@@ -303,7 +303,7 @@ MiningHelper.prototype.fetchSingleStudioInformationFromTMD = function()
  */
 MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 {
-	var helper = this;
+	var objectHandle = this;
 	var query = this.baseURL + '/movies/' + id + '.json?apikey=' + this.apiKey;
 
 	/**
@@ -318,14 +318,14 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 				if (data === true)
 					// Puts a flag in the list of movie IDs so no need to collect twice and
 					// waste the allowed queries.
-					helper.updateFetchedInfoFlag(movie.id, 1, true);
+					objectHandle.updateFetchedInfoFlag(movie.id, 1, true);
 			}
 		});
 	};
 
 	var insertSimilarMoviesInformationToDb = function(movie)
 	{
-		var query = helper.baseURL + '/movies/' + movie.id + '/similar.json?apikey=' + helper.apiKey + '&limit=5';
+		var query = objectHandle.baseURL + '/movies/' + movie.id + '/similar.json?apikey=' + objectHandle.apiKey + '&limit=5';
 		var mId = movie.id;
 	
 		$.ajax({
@@ -413,7 +413,7 @@ MiningHelper.prototype.fetchSingleMovieInformationFromRT = function(id)
 	var insertReviewInformationToDb = function(movie)
 	{
 		var movieId = movie.id;
-		var query = helper.baseURL + '/movies/' + movie.id + '/reviews.json?review_type=all&page_limit=20&page=1&country=us&apikey=' + helper.apiKey;
+		var query = objectHandle.baseURL + '/movies/' + movie.id + '/reviews.json?review_type=all&page_limit=20&page=1&country=us&apikey=' + objectHandle.apiKey;
 
 		$.ajax({
 			type: 'GET',
@@ -494,7 +494,7 @@ MiningHelper.prototype.updateFetchedInfoFlag = function(id, status, dbType)
  */
 MiningHelper.prototype.fetchSimilarMovies = function()
 {
-	var helper = this;
+	var objectHandle = this;
 	
 	$.ajax({
 		type: 'GET',
@@ -506,8 +506,8 @@ MiningHelper.prototype.fetchSimilarMovies = function()
 			$.each(data, function(index, value) {
 				// I need to slow down, only 10 calls/sec allowed
 				setTimeout(function() {
-					helper.fetch5SimilarMoviesFromRottenTomatoes(value.id);
-					helper.updateCheckedSimilarMoviesStatus(value.id, 1);
+					objectHandle.fetch5SimilarMoviesFromRottenTomatoes(value.id);
+					objectHandle.updateCheckedSimilarMoviesStatus(value.id, 1);
 				}, time);
 				
 				time += 125;

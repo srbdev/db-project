@@ -140,6 +140,7 @@ public class MovieDao
 				Movie movie = new Movie();
 				movie.setTitle(rs.getString("title"));
 				movie.setYear(rs.getInt("year"));
+				movie.setRuntime(rs.getInt("runtime"));
 				movie.setRating(rs.getString("rating"));
 				movie.setRevenue(rs.getInt("revenue"));
 				movie.setBudget(rs.getInt("budget"));
@@ -172,6 +173,7 @@ public class MovieDao
 				actor.setBirthday(rs.getDate("birthday"));
 				actor.setDeathday(rs.getDate("deathday"));
 				actor.setBirthplace(rs.getString("birthplace"));
+				actor.setPictureURL(rs.getString("pictureURL"));
 				
 				return actor;
 			}

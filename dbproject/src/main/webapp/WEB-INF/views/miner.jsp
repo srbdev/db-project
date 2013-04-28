@@ -136,8 +136,8 @@
 	</div>
 	
 	<div class="rtMainContent rtMainContentWithTitle">
-		<div class="sectionTitle" id="stPopulateDb">
-			ACTORS
+		<div class="sectionTitle" id="stActorTable">
+			ACTORS TABLE
 		</div>
 		<div class="rtContentSection">
 			<span class="minerButton" onclick="miner.removeActorsWithoutPictures()">Get</span>

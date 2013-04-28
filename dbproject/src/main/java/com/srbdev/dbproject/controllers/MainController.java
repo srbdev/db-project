@@ -93,7 +93,7 @@ public class MainController
 	 * @param search
 	 * @return List of movies
 	 */
-	@RequestMapping(value = "/SearchMovies")
+	@RequestMapping(value = "/searchMovies")
 	public @ResponseBody List<Movie> searchMovies(@RequestParam(required = true) String search)
 	{
 		List<Movie> movies = movieDao.searchMovie(search);
