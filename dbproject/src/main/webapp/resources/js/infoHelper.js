@@ -18,6 +18,51 @@ InfoHelper.prototype.removeResultTiles = function()
 	$('.rtResultTiles').remove();
 };
 
+InfoHelper.prototype.displayYearlyStatistics = function(data, object)
+{
+	var objectHandle = object;
+	
+	objectHandle.removeResultTiles();
+	
+	var tile = $('<div />').addClass('rtMainContent rtMainContentWithTitle rtResultTiles');
+	var tileTitle = $('<div />')
+			.addClass('sectionTitle')
+			.css('width', 90)
+			.text('RESULTS');
+	var content = $('<div />').addClass('rtContentSection').css('height', 200*data.length + 75);
+	
+	tile.append(tileTitle);
+	
+	$.each(data, function(index, value) {
+		var stat = $('<div />').addClass('rtResultSubSection');
+		
+		var info = $('<div />')
+			.css('width', 800 - 185)
+			.css('height', 200)
+			.css('float', 'left')
+			.css('margin-bottom', 10);
+		
+		var name = $('<h2 />').text(value.year);
+		var sum = $('<p />').text('Sum: ' + objectHandle.formatInDollars(value.sum));
+		var average =$('<p />').text('Average: ' +  objectHandle.formatInDollars(value.average));
+		var min = $('<p />').text('Minimum: ' + objectHandle.formatInDollars(value.minimum));
+		var max = $('<p />').text('Maximum: ' + objectHandle.formatInDollars(value.maximum));
+		
+		info.append(name);
+		info.append(sum);
+		info.append(average);
+		info.append(min);
+		info.append(max);
+		
+		stat.append(info);
+		
+		content.append(stat);
+	});
+	
+	tile.append(content);
+	$('body').append(tile);
+};
+
 InfoHelper.prototype.displayActorSearchResult = function(data, object)
 {
 	var objectHandle = object;
@@ -86,7 +131,7 @@ InfoHelper.prototype.displayMovieSearchResult = function(data, object)
 			.addClass('sectionTitle')
 			.css('width', 90)
 			.text('RESULTS');
-	var content = $('<div />').addClass('rtContentSection').css('height', 300*data.length + 30);
+	var content = $('<div />').addClass('rtContentSection').css('height', 225*data.length + 30);
 	
 	tile.append(tileTitle);
 	
@@ -108,7 +153,7 @@ InfoHelper.prototype.displayMovieSearchResult = function(data, object)
 		
 		var info = $('<div />')
 			.css('width', 800 - 120)
-			.css('height', 300)
+			.css('height', 225)
 			.css('float', 'left')
 			.css('margin-bottom', 10);
 		
@@ -125,6 +170,146 @@ InfoHelper.prototype.displayMovieSearchResult = function(data, object)
 		info.append(runtime);
 		info.append(budget);
 		info.append(revenue);
+		
+		movie.append(picture);
+		movie.append(info);
+		
+		content.append(movie);
+	});
+	
+	tile.append(content);
+	$('body').append(tile);
+};
+
+InfoHelper.prototype.displayRatedMovieResult = function(data, object)
+{
+	var objectHandle = object;
+	
+	objectHandle.removeResultTiles();
+	
+	var tile = $('<div />').addClass('rtMainContent rtMainContentWithTitle rtResultTiles');
+	var tileTitle = $('<div />')
+			.addClass('sectionTitle')
+			.css('width', 90)
+			.text('RESULTS');
+	var content = $('<div />').addClass('rtContentSection').css('height', 225*data.length + 30);
+	
+	tile.append(tileTitle);
+	
+	$.each(data, function(index, value) {
+		var movie = $('<div />').addClass('rtResultSubSection');
+		var picture = $('<img />')
+			.attr('src', value.poster_url)
+			.css('box-shadow', '0px 1px 3px rgba(0,0,0,0.3)')
+			.css('float', 'left');
+		
+		var info = $('<div />')
+			.css('width', 800 - 120)
+			.css('height', 225)
+			.css('float', 'left')
+			.css('margin-bottom', 10);
+		
+		var title = $('<h2 />').text(value.title);
+		var year = $('<p />').text('Year: ' + value.year);
+		var score = $('<p />').text('Score: ' + value.rating);
+		
+		info.append(title);
+		info.append(year);
+		info.append(score);
+		
+		movie.append(picture);
+		movie.append(info);
+		
+		content.append(movie);
+	});
+	
+	tile.append(content);
+	$('body').append(tile);
+};
+
+InfoHelper.prototype.displayActorsFromLargeRevenueMovies = function(data, object)
+{
+	var objectHandle = object;
+	
+	objectHandle.removeResultTiles();
+	
+	var tile = $('<div />').addClass('rtMainContent rtMainContentWithTitle rtResultTiles');
+	var tileTitle = $('<div />')
+			.addClass('sectionTitle')
+			.css('width', 90)
+			.text('RESULTS');
+	var content = $('<div />').addClass('rtContentSection').css('height', 300*data.length + 30);
+	
+	tile.append(tileTitle);
+	
+	$.each(data, function(index, value) {
+		var actor = $('<div />').addClass('rtResultSubSection');
+		var picture = $('<img />')
+			.attr('src', objectHandle.movieDbBasePictureURL + value.pictureURL)
+			.css('box-shadow', '0px 1px 3px rgba(0,0,0,0.3)')
+			.css('float', 'left');
+		
+		var info = $('<div />')
+			.css('width', 800 - 185)
+			.css('height', 300)
+			.css('float', 'left')
+			.css('margin-bottom', 10);
+		
+		var name = $('<h2 />').text(value.name);
+		var title = $('<p />').text('Title: ' + value.title);
+		var year = $('<p />').text('Year: ' + value.year);
+		var revenue = $('<p />').text('Revenue: ' + objectHandle.formatInDollars(value.revenue));
+		
+		info.append(name);
+		info.append(title);
+		info.append(year);
+		info.append(revenue);
+		
+		actor.append(picture);
+		actor.append(info);
+		
+		content.append(actor);
+	});
+	
+	tile.append(content);
+	$('body').append(tile);
+};
+
+InfoHelper.prototype.displayMostReviewedMovies = function(data, object)
+{
+	var objectHandle = object;
+	
+	objectHandle.removeResultTiles();
+	
+	var tile = $('<div />').addClass('rtMainContent rtMainContentWithTitle rtResultTiles');
+	var tileTitle = $('<div />')
+			.addClass('sectionTitle')
+			.css('width', 90)
+			.text('RESULTS');
+	var content = $('<div />').addClass('rtContentSection').css('height', 225*data.length + 30);
+	
+	tile.append(tileTitle);
+	
+	$.each(data, function(index, value) {
+		var movie = $('<div />').addClass('rtResultSubSection');
+		var picture = $('<img />')
+			.attr('src', value.poster_url)
+			.css('box-shadow', '0px 1px 3px rgba(0,0,0,0.3)')
+			.css('float', 'left');
+		
+		var info = $('<div />')
+			.css('width', 800 - 120)
+			.css('height', 225)
+			.css('float', 'left')
+			.css('margin-bottom', 10);
+		
+		var title = $('<h2 />').text(value.title);
+		var year = $('<p />').text('Year: ' + value.year);
+		var nReviews = $('<p />').text('Number of reviews: ' + value.numberOfReviews);
+		
+		info.append(title);
+		info.append(year);
+		info.append(nReviews);
 		
 		movie.append(picture);
 		movie.append(info);
@@ -154,16 +339,19 @@ InfoHelper.prototype.formatInDollars = function(amount)
  * Query functions [START]
  */
 
-InfoHelper.prototype.fetchTopMoviesForYearAndRating = function(year, rating)
+InfoHelper.prototype.fetchTopMoviesForYearAndRating = function()
 {
 	objectHandle = this; 
+	
+	var year = $('#rtSearchTopRevenueMoviesYear').val();
+	var rating = $('#rtSearchTopRevenueMoviesRating').val();
 	
 	$.ajax({
 		type: 'GET',
 		url: 'fetchTopMoviesForYearAndRating',
 		data: {year: year, rating: rating},
 		success: function(data) {
-			console.log(data);
+			objectHandle.displayMovieSearchResult(data, objectHandle);
 		}
 	});
 };
@@ -176,21 +364,23 @@ InfoHelper.prototype.fetchMovieStatisticsForYear = function()
 		type: 'GET',
 		url: 'fetchMovieStatisticsForYear',
 		success: function(data) {
-			console.log(data);
+			objectHandle.displayYearlyStatistics(data, objectHandle);
 		}
 	});
 };
 
-InfoHelper.prototype.fetchActorsFrom = function(birthplace)
+InfoHelper.prototype.fetchActorsFrom = function()
 {
 	objectHandle = this; 
+	
+	var birthplace = $('#rtSearchActorsByLocationInput').val();
 	
 	$.ajax({
 		type: 'GET',
 		url: 'fetchActorsFrom',
 		data: {birthplace: birthplace},
 		success: function(data) {
-			console.log(data);
+			objectHandle.displayActorSearchResult(data, objectHandle);
 		}
 	});
 };
@@ -203,7 +393,7 @@ InfoHelper.prototype.fetchWorstMovies = function()
 		type: 'GET',
 		url: 'fetchWorstMovies',
 		success: function(data) {
-			console.log(data);
+			objectHandle.displayRatedMovieResult(data, objectHandle);
 		}
 	});
 };
@@ -216,7 +406,7 @@ InfoHelper.prototype.fetchBestMovies = function()
 		type: 'GET',
 		url: 'fetchBestMovies',
 		success: function(data) {
-			console.log(data);
+			objectHandle.displayRatedMovieResult(data, objectHandle);
 		}
 	});
 };
@@ -261,7 +451,7 @@ InfoHelper.prototype.fetchActorsInTopRevenueMovies = function()
 		type: 'GET',
 		url: 'fetchActorsInTopRevenueMovies',
 		success: function(data) {
-			console.log(data);
+			objectHandle.displayActorsFromLargeRevenueMovies(data, objectHandle);
 		}
 	});
 };
@@ -274,7 +464,7 @@ InfoHelper.prototype.fetchMostReviewedMovies = function()
 		type: 'GET',
 		url: 'fetchMostReviewedMovies',
 		success: function(data) {
-			console.log(data);
+			objectHandle.displayMostReviewedMovies(data, objectHandle);
 		}
 	});
 };

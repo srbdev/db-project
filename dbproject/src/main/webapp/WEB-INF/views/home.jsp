@@ -52,6 +52,30 @@
 	    	<p>2. Search for actors: 
 	    	<input id="rtSearchActorsInput" class="rtTextInput" type="text" placeholder="i.e. Natalie Portman"></input> 
 	    	<span class="minerButton" onclick="helper.searchActors()">Search</span></p>
+	    	
+	    	<p>3. Search for actors by birthplace: 
+	    	<input id="rtSearchActorsByLocationInput" class="rtTextInput" type="text" placeholder="i.e. Los Angeles"></input> 
+	    	<span class="minerButton" onclick="helper.fetchActorsFrom()">Search</span></p>
+	    	
+	    	<p>4. Display top 5 best movies:  
+	    	<span class="minerButton" onclick="helper.fetchBestMovies()">Get</span></p>
+	    	
+	    	<p>5. Display the 5 worst movies:  
+	    	<span class="minerButton" onclick="helper.fetchWorstMovies()">Get</span></p>
+	    	
+	    	<p>6. Search top 5 movies by revenue, year and MPAA rating:
+	    	<input id="rtSearchTopRevenueMoviesYear" class="rtTextInput" type="text" placeholder="i.e. 2011"></input>
+	    	<input id="rtSearchTopRevenueMoviesRating" class="rtTextInput" type="text" placeholder="i.e. R"></input>  
+	    	<span class="minerButton" onclick="helper.fetchTopMoviesForYearAndRating()">Search</span></p>
+	    	
+	    	<p>7. Display actors in movies with largest revenues:  
+	    	<span class="minerButton" onclick="helper.fetchActorsInTopRevenueMovies()">Get</span></p>
+	    	
+	    	<p>8. Display the 5 most reviewed movies:  
+	    	<span class="minerButton" onclick="helper.fetchMostReviewedMovies()">Get</span></p>
+	    	
+	    	<p>9. Display movie statistics for the last 10 years:  
+	    	<span class="minerButton" onclick="helper.fetchMovieStatisticsForYear()">Get</span></p>
 	    </div>
   	</div>
 </body>

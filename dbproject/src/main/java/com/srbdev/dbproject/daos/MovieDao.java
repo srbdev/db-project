@@ -50,6 +50,7 @@ public class MovieDao
 				Movie movie = new Movie();
 				movie.setTitle(rs.getString("title"));
 				movie.setYear(rs.getInt("year"));
+				movie.setRuntime(rs.getInt("runtime"));
 				movie.setRating(rs.getString("rating"));
 				movie.setRevenue(rs.getInt("revenue"));
 				movie.setBudget(rs.getInt("budget"));
@@ -82,8 +83,8 @@ public class MovieDao
 			{
 				Infometric info = new Infometric();
 				info.setYear(rs.getInt("year"));
-				info.setSum(rs.getInt("sum"));
-				info.setAverage(rs.getInt("average"));
+				info.setSum(rs.getLong("sum"));
+				info.setAverage(rs.getDouble("average"));
 				info.setMinimum(rs.getInt("minimum"));
 				info.setMaximum(rs.getInt("maximum"));
 				

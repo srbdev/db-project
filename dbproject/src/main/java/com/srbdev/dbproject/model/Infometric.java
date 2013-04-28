@@ -3,8 +3,8 @@ package com.srbdev.dbproject.model;
 public class Infometric 
 {
 	private int year;
-	private int sum;
-	private int average;
+	private long sum;
+	private double average;
 	private int minimum;
 	private int maximum;
 	
@@ -20,16 +20,16 @@ public class Infometric
 	public void setYear(int year) {
 		this.year = year;
 	}
-	public int getSum() {
+	public long getSum() {
 		return sum;
 	}
-	public void setSum(int sum) {
+	public void setSum(long sum) {
 		this.sum = sum;
 	}
-	public int getAverage() {
+	public double getAverage() {
 		return average;
 	}
-	public void setAverage(int average) {
+	public void setAverage(double average) {
 		this.average = average;
 	}
 	public int getMinimum() {
