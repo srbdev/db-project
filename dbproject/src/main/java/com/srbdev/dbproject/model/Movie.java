@@ -1,6 +1,10 @@
 package com.srbdev.dbproject.model;
 
 
+/**
+ * This model is the object passed back from the back-end to the front-end in
+ * the JSON format.
+ */
 public class Movie 
 {
 	private int id;

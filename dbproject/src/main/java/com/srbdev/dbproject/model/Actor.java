@@ -2,6 +2,11 @@ package com.srbdev.dbproject.model;
 
 import java.sql.Date;
 
+
+/**
+ * This model is the object passed back from the back-end to the front-end in
+ * the JSON format.
+ */
 public class Actor 
 {
 	private int id;

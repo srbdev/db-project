@@ -5,6 +5,7 @@
  */
 function InfoHelper()
 {
+	// Base URL to display picture IDs from the actors
 	this.movieDbBasePictureURL = 'http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185';
 }
 
@@ -13,11 +14,19 @@ function InfoHelper()
  * Result/information display functions [START]
  */
 
+/**
+ * Clears the result tiles from the info page.
+ */
 InfoHelper.prototype.removeResultTiles = function()
 {
 	$('.rtResultTiles').remove();
 };
 
+/**
+ * Displays the yearly statistics about the movies in the database.
+ * @param data Data from the database
+ * @param object InfoHelper object
+ */
 InfoHelper.prototype.displayYearlyStatistics = function(data, object)
 {
 	var objectHandle = object;
@@ -63,6 +72,11 @@ InfoHelper.prototype.displayYearlyStatistics = function(data, object)
 	$('body').append(tile);
 };
 
+/**
+ * Displays the results from the actor search.
+ * @param data Data from the database
+ * @param object InfoHelper object
+ */
 InfoHelper.prototype.displayActorSearchResult = function(data, object)
 {
 	var objectHandle = object;
@@ -120,6 +134,11 @@ InfoHelper.prototype.displayActorSearchResult = function(data, object)
 	$('body').append(tile);
 };
 
+/**
+ * Displays the results from the movie search.
+ * @param data Data from the database
+ * @param object InfoHelper object
+ */
 InfoHelper.prototype.displayMovieSearchResult = function(data, object)
 {
 	var objectHandle = object;
@@ -181,6 +200,11 @@ InfoHelper.prototype.displayMovieSearchResult = function(data, object)
 	$('body').append(tile);
 };
 
+/**
+ * Displays the results from the rated movies.
+ * @param data Data from the database
+ * @param object InfoHelper object
+ */
 InfoHelper.prototype.displayRatedMovieResult = function(data, object)
 {
 	var objectHandle = object;
@@ -227,6 +251,11 @@ InfoHelper.prototype.displayRatedMovieResult = function(data, object)
 	$('body').append(tile);
 };
 
+/**
+ * Dsiplays the list of actors from the movies with the largest revenues.
+ * @param data Data from the database
+ * @param object InfoHelper object
+ */
 InfoHelper.prototype.displayActorsFromLargeRevenueMovies = function(data, object)
 {
 	var objectHandle = object;
@@ -275,6 +304,11 @@ InfoHelper.prototype.displayActorsFromLargeRevenueMovies = function(data, object
 	$('body').append(tile);
 };
 
+/**
+ * Displays the list of movies with the most reviews.
+ * @param data Data from the database
+ * @param object InfoHelper object
+ */
 InfoHelper.prototype.displayMostReviewedMovies = function(data, object)
 {
 	var objectHandle = object;
@@ -321,6 +355,12 @@ InfoHelper.prototype.displayMostReviewedMovies = function(data, object)
 	$('body').append(tile);
 };
 
+/**
+ * Formats the input amount into the dollar format with the dollar sign and
+ * commas, and with two decimal points.
+ * @param amount Amount (in dollars)
+ * @returns {String} Formatted amount
+ */
 InfoHelper.prototype.formatInDollars = function(amount)
 {
 	var n = amount.toFixed(2).split(".");
@@ -339,6 +379,9 @@ InfoHelper.prototype.formatInDollars = function(amount)
  * Query functions [START]
  */
 
+/**
+ * AJAX call to fetch the top movies by revenue, year and MPAA rating.
+ */
 InfoHelper.prototype.fetchTopMoviesForYearAndRating = function()
 {
 	objectHandle = this; 
@@ -356,6 +399,9 @@ InfoHelper.prototype.fetchTopMoviesForYearAndRating = function()
 	});
 };
 
+/**
+ * AJAX call to fetch movie statistics for the last 10 years.
+ */
 InfoHelper.prototype.fetchMovieStatisticsForYear = function()
 {
 	objectHandle = this; 
@@ -369,6 +415,9 @@ InfoHelper.prototype.fetchMovieStatisticsForYear = function()
 	});
 };
 
+/**
+ * AJAX call to fetch the actors given a location.
+ */
 InfoHelper.prototype.fetchActorsFrom = function()
 {
 	objectHandle = this; 
@@ -385,6 +434,9 @@ InfoHelper.prototype.fetchActorsFrom = function()
 	});
 };
 
+/**
+ * AJAX call to fetch the worst movies.
+ */
 InfoHelper.prototype.fetchWorstMovies = function()
 {
 	objectHandle = this; 
@@ -398,6 +450,9 @@ InfoHelper.prototype.fetchWorstMovies = function()
 	});
 };
 
+/**
+ * AJAX call to fetch the best movies.
+ */
 InfoHelper.prototype.fetchBestMovies = function()
 {
 	objectHandle = this; 
@@ -411,6 +466,9 @@ InfoHelper.prototype.fetchBestMovies = function()
 	});
 };
 
+/**
+ * AJAX call to search for movies.
+ */
 InfoHelper.prototype.searchMovies = function()
 {
 	objectHandle = this; 
@@ -427,6 +485,9 @@ InfoHelper.prototype.searchMovies = function()
 	});
 };
 
+/**
+ * AJAX call to search for actors.
+ */
 InfoHelper.prototype.searchActors = function()
 {
 	objectHandle = this; 
@@ -443,6 +504,9 @@ InfoHelper.prototype.searchActors = function()
 	});
 };
 
+/**
+ * AJAX call to fetch the list of actors from movies with the largest revenues.
+ */
 InfoHelper.prototype.fetchActorsInTopRevenueMovies = function()
 {
 	objectHandle = this; 
@@ -456,6 +520,9 @@ InfoHelper.prototype.fetchActorsInTopRevenueMovies = function()
 	});
 };
 
+/**
+ * AJAX call to fetch the list of most reviewed movies.
+ */
 InfoHelper.prototype.fetchMostReviewedMovies = function()
 {
 	objectHandle = this; 
